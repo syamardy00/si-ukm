@@ -1,0 +1,212 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\BeritaUkm;
+use App\Ukm;
+use Auth;
+use Illuminate\Http\Request;
+use Carbon\Carbon;
+use App\Http\AuthTraits\OwnsRecord;
+use PDF;
+
+class BeritaUkmController extends Controller
+{
+    use OwnsRecord;
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+      $id_ukm = Auth::guard('adminUkm')->user()->id_ukm;
+      $ukm = Ukm::where('id', $id_ukm)->get();
+
+      $dBerita = BeritaUkm::where('id_ukm', $id_ukm)->get();
+
+      return view('adminUkm.beritaUkm.index', compact('ukm', 'dBerita'));
+    }
+
+    public function data_berita(){
+      $id_ukm = Auth::guard('adminUkm')->user()->id_ukm;
+      $ukm = Ukm::where('id', $id_ukm)->get();
+
+      $berita = BeritaUkm::where('id_ukm', $id_ukm)->get();
+
+      return $berita;
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+      $id_ukm = Auth::guard('adminUkm')->user()->id_ukm;
+      $ukm = Ukm::where('id', $id_ukm)->get();
+      return view('adminUkm.beritaUkm.create', compact('ukm'));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        $id_ukm = Auth::guard('adminUkm')->user()->id_ukm;
+        $validator = $this->validate($request, [
+          'judul_berita' => 'required|string|min:3|max:255',
+          'isi_berita' => 'required',
+          'sifat_berita' => 'required'
+        ]);
+
+        if($validator){
+          BeritaUkm::create([
+            'judul_berita' => request('judul_berita'),
+            'isi_berita' => request('isi_berita'),
+            'tanggal_berita' => Carbon::now(),
+            'id_ukm' => $id_ukm,
+            'sifat_berita' => request('sifat_berita')
+          ]);
+
+          return redirect()->to('/berita-ukm')->with('berhasil', 'Berita berhasil disimpan.');
+        }else{
+            return redirect()->to('/berita-ukm/tambah')->withErrors($validator)->withInput();
+        }
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\BeritaUkm  $beritaUkm
+     * @return \Illuminate\Http\Response
+     */
+    public function show(BeritaUkm $id)
+    {
+      if(Auth::guard('adminUkm')->check()){ // -----------------------------------------------------------jika admin UKM
+
+          if (!$this->pemilikAdminUkm($id)){
+            return redirect()->back();
+          }
+          $id_ukm = Auth::guard('adminUkm')->user()->id_ukm;
+          $ukm = Ukm::where('id', $id_ukm)->get();
+
+          $berita = BeritaUkm::where('id', $id->id)->get();
+
+          return view('adminUkm.beritaUkm.show', compact('ukm', 'berita'));
+
+      }else if(Auth::guard('anggotaUkm')->check()){ //----------------------------------------------------jika anggota UKM
+        //
+      }else if(Auth::guard('admin')->check()){ // --------------------------------------------------------jika admin
+
+          $berita = BeritaUkm::where('id', $id->id)->where('sifat_berita', 'umum')->get();
+          $ukm = UKM::where('id', $berita[0]['id_ukm'])->get();
+          return view('admin.beritaUkm.show', compact('berita', 'ukm'));
+
+      }else if(Auth::guard('bem')->check()){ // --------------------------------------------------------jika bem
+        //
+      }else if(Auth::guard('wd1')->check()){ // --------------------------------------------------------jika wd1
+        //
+      }else{ // --------------------------------------------------------jika tidak login
+
+      }
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\BeritaUkm  $beritaUkm
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(BeritaUkm $id)
+    {
+      if (!$this->pemilikAdminUkm($id)){
+        return redirect()->back();
+      }
+      $id_ukm = Auth::guard('adminUkm')->user()->id_ukm;
+      $ukm = Ukm::where('id', $id_ukm)->get();
+
+      $berita = BeritaUkm::where('id', $id->id)->get();
+
+      return view('adminUkm.beritaUkm.edit', compact('ukm', 'berita'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\BeritaUkm  $beritaUkm
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, BeritaUkm $id)
+    {
+        $id_ukm = Auth::guard('adminUkm')->user()->id_ukm;
+        $validator = $this->validate($request, [
+          'judul_berita' => 'required|string|min:3|max:255',
+          'isi_berita' => 'required',
+          'sifat_berita' => 'required'
+        ]);
+
+        if($validator){
+          BeritaUkm::where('id', $id->id)
+          ->update([
+            'judul_berita' => request('judul_berita'),
+            'isi_berita' => request('isi_berita'),
+            'tanggal_berita' => Carbon::now(),
+            'sifat_berita' => request('sifat_berita')
+          ]);
+
+          return redirect()->to('/berita-ukm')->with('berhasil', 'Berita berhasil disimpan.');
+        }else{
+            return redirect()->to('/berita-ukm/edit/' .$request->id)->withErrors($validator)->withInput();
+        }
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\BeritaUkm  $beritaUkm
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(BeritaUkm $id)
+    {
+        if (!$this->pemilikAdminUkm($id)){
+          return redirect()->back();
+        }
+
+        $id->delete();
+
+        return redirect()->to('/berita-ukm')->with('berhasil', 'Berita berhasil dihapus.');
+
+    }
+
+    public function cetak_pdf(BeritaUkm $id){
+
+      if (!$this->pemilikAdminUkm($id)){
+        return redirect()->back();
+      }
+
+      $id_ukm = Auth::guard('adminUkm')->user()->id_ukm;
+      $ukm = Ukm::where('id', $id_ukm)->get();
+      $berita = BeritaUkm::where('id', $id->id)->get();
+
+      //return view('adminUkm.beritaUkm.laporan_pdf', compact('ukm', 'berita'));
+
+      $pdf = PDF::loadview('adminUkm.beritaUkm.laporan_pdf', compact('ukm', 'berita'));
+      return $pdf->download($berita[0]['judul_berita']);
+    }
+
+    public function semuaBerita(){
+      $id_ukm = Auth::guard('adminUkm')->user()->id_ukm;
+      $ukm = Ukm::where('id', $id_ukm)->get();
+      $berita = BeritaUkm::where('id_ukm', $id_ukm)->limit(10)->get();
+      $beritaU = BeritaUkm::where('id_ukm', $id_ukm)->where('sifat_berita', 'umum')->limit(10)->get();
+      $beritaI = BeritaUkm::where('id_ukm', $id_ukm)->where('sifat_berita', 'internal')->limit(10)->get();
+
+      return view('adminUkm.beritaUkm.semuaBerita', compact('ukm', 'berita', 'beritaU', 'beritaI'));
+    }
+}
