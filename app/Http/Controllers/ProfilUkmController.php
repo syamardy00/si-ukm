@@ -3,14 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\ProfilUser;
+use App\AnggotaUkm;
+use App\CalonAnggota;
+use App\ProkerUkm;
 use App\Ukm;
 use Illuminate\Http\Request;
 use Auth;
 use Carbon\Carbon;
 use Image;
+use Session;
 use File;
 use App\GaleriFoto;
 use App\BeritaUkm;
+use DB;
 
 class ProfilUkmController extends Controller
 {
@@ -20,6 +25,7 @@ class ProfilUkmController extends Controller
      * @return \Illuminate\Http\Response
      */
 
+    // ADMIN ==========================================================================================================================
     public function index(Ukm $ukm) //index admin
     {
       $id_ukm = $ukm->id;
@@ -30,16 +36,6 @@ class ProfilUkmController extends Controller
       return view('admin.profilUkm.index', compact('ukm', 'berita', 'beritaU', 'beritaI', 'foto'));
     }
 
-    public function indexAdminUkm(){
-      $id_ukm = Auth::guard('adminUkm')->user()->id_ukm;
-      $ukm = Ukm::where('id', $id_ukm)->get();
-      $berita = BeritaUkm::where('id_ukm', $id_ukm)->limit(10)->get();
-      $beritaU = BeritaUkm::where('id_ukm', $id_ukm)->where('sifat_berita', 'umum')->limit(10)->get();
-      $beritaI = BeritaUkm::where('id_ukm', $id_ukm)->where('sifat_berita', 'internal')->limit(10)->get();
-      $foto = GaleriFoto::where('id_ukm', $id_ukm)->orderBy('id', 'DESC')->get();
-      // return $dataUkm;
-      return view('adminUkm.profilUkm.index', compact('ukm', 'berita', 'beritaU', 'beritaI', 'foto'));
-    }
 
     /**
      * Show the form for creating a new resource.
@@ -51,34 +47,45 @@ class ProfilUkmController extends Controller
         return view('admin.ukm.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
+
+    // ADMIN UKM ===========================================================================================================================================
+    public function indexAdminUkm(Request $request){ //adminUKM dan anggotaUKMa(DASHBOARD)
+      // dd($request);
+      if(Auth::guard('anggotaUkm')->check()){
+        if($request->id_ukm){
+          if(Session::has('ukmDipilih')){
+            Session::forget('ukmDipilih');
+          }
+          $id_ukm = request('id_ukm');
+          $request->session()->put('ukmDipilih', $id_ukm);
+        }
+        $id_ukm = Session::get('ukmDipilih');
+        $id = Auth::guard('anggotaUkm')->user()->id;
+        $profil = ProfilUser::where('id_user', $id)->get();
+      }else if(Auth::guard('adminUkm')->check()){
+        $id_ukm = Auth::guard('adminUkm')->user()->id_ukm;
+      }
+
+      $jAnggota = AnggotaUkm::where('id_ukm', $id_ukm)->where('status', '=', 'Aktif')->count();
+      $jProker = ProkerUkm::where('id_ukm', $id_ukm)->where('pelaksanaan', 'Belum Terlaksana')->count();
+      $tahun = Carbon::now()->format('Y');
+      //$jCalonAnggota = DB::table('penerimaan')->where('id_ukm', $id_ukm)->where(YEAR('tgl_pendaftaran'), '=', $tahun)->count();
+      $jCalonAnggota = CalonAnggota::where('id_ukm', $id_ukm)->whereYear('tgl_pendaftaran', $tahun)->count();
+
+      $ukm = Ukm::where('id', $id_ukm)->get();
+      $berita = BeritaUkm::where('id_ukm', $id_ukm)->limit(10)->get();
+      $beritaU = BeritaUkm::where('id_ukm', $id_ukm)->where('sifat_berita', 'umum')->limit(10)->get();
+      $beritaI = BeritaUkm::where('id_ukm', $id_ukm)->where('sifat_berita', 'internal')->limit(10)->get();
+      $foto = GaleriFoto::where('id_ukm', $id_ukm)->orderBy('id', 'DESC')->get();
+      // return $dataUkm;
+      if(Auth::guard('adminUkm')->check()){
+        return view('adminUkm.profilUkm.index', compact('ukm', 'berita', 'beritaU', 'beritaI', 'foto', 'jAnggota', 'jProker', 'jCalonAnggota'));
+      }else if(Auth::guard('anggotaUkm')->check()){
+        return view('anggotaUkm.ukm.dashboard', compact('ukm', 'berita', 'beritaU', 'beritaI', 'foto', 'profil', 'jAnggota', 'jProker', 'jCalonAnggota'));
+      }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\ProfilUkm  $profilUkm
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Ukm $ukm)
-    {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\ProfilUkm  $profilUkm
-     * @return \Illuminate\Http\Response
-     */
     public function edit(Ukm $ukm)
     {
         // $id = Auth::guard('adminUkm')->user()->id;
@@ -89,13 +96,7 @@ class ProfilUkmController extends Controller
         return view('adminUkm.profilUkm.edit', compact('ukm'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\ProfilUkm  $profilUkm
-     * @return \Illuminate\Http\Response
-     */
+
     public function update(Request $request)
     {
         $id_ukm = Auth::guard('adminUkm')->user()->id_ukm;
@@ -212,14 +213,23 @@ class ProfilUkmController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\ProfilUkm  $profilUkm
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Ukm $ukm)
-    {
+
+    // ANGGOTA UKM ===========================================================================================================================================
+
+    public function profilUkm($id){
+      if(Session::has('ukmDipilih')){
+        Session::forget('ukmDipilih');
+      }
+
+      $id_user = Auth::guard('anggotaUkm')->user()->id;
+      $profil = ProfilUser::where('id_user', $id_user)->get();
+
+      $ukm = Ukm::where('id', $id)->get();
+      $berita = BeritaUkm::where('id_ukm', $id)->limit(10)->get();
+      $beritaU = BeritaUkm::where('id_ukm', $id)->where('sifat_berita', 'umum')->limit(10)->get();
+      $foto = GaleriFoto::where('id_ukm', $id)->orderBy('id', 'DESC')->get();
+      // return $dataUkm;
+      return view('anggotaUkm.ukm.profilUkm', compact('ukm', 'berita', 'beritaU', 'foto', 'profil'));
 
     }
 }

@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Http\AuthTraits\OwnsRecord;
 use PDF;
+use Session;
 
 class AnggotaUkmController extends Controller
 {
@@ -28,27 +29,36 @@ class AnggotaUkmController extends Controller
 
     public function index()
     {
-        $id = Auth::guard('adminUkm')->user()->id;
-        $id_ukm = Auth::guard('adminUkm')->user()->id_ukm;
-        $ukm = Ukm::where('id', $id_ukm)->get();
-        $dAnggota = db::table('profil_user')
-              ->join('jurusan', 'profil_user.id_jurusan', '=', 'jurusan.id')
-              ->join('anggota', 'profil_user.id_user', '=', 'anggota.id_user')
-              ->select('profil_user.nim',
-              'profil_user.nama',
-              'profil_user.tahun_angkatan',
-              'profil_user.no_telepon',
-              'profil_user.email',
-              'jurusan.nama_jurusan',
-              'anggota.id',
-              'anggota.status')
-              ->where('anggota.id_ukm', $id_ukm)->get();
-        //return $dAnggota;
-        return view('adminUkm.anggotaUkm.index', compact('dAnggota','ukm'));
+      if(Session::has('ukmDipilih')){
+        $id_user = Auth::guard('anggotaUkm')->user()->id;
+        $profil = ProfilUser::where('id_user', $id_user)->get();
+        return view('anggotaUkm.anggotaUkm.index', compact('profil'));
+      }
+      $id = Auth::guard('adminUkm')->user()->id;
+      $id_ukm = Auth::guard('adminUkm')->user()->id_ukm;
+      $ukm = Ukm::where('id', $id_ukm)->get();
+      $dAnggota = db::table('profil_user')
+            ->join('jurusan', 'profil_user.id_jurusan', '=', 'jurusan.id')
+            ->join('anggota', 'profil_user.id_user', '=', 'anggota.id_user')
+            ->select('profil_user.nim',
+            'profil_user.nama',
+            'profil_user.tahun_angkatan',
+            'profil_user.no_telepon',
+            'profil_user.email',
+            'jurusan.nama_jurusan',
+            'anggota.id',
+            'anggota.status')
+            ->where('anggota.id_ukm', $id_ukm)->get();
+      //return $dAnggota;
+      return view('adminUkm.anggotaUkm.index', compact('dAnggota','ukm'));
     }
 
     public function data_anggota(){
-      $id_ukm = Auth::guard('adminUkm')->user()->id_ukm;
+      if(Session::has('ukmDipilih')){
+        $id_ukm = Session::get('ukmDipilih');
+      }else{
+        $id_ukm = Auth::guard('adminUkm')->user()->id_ukm;
+      }
 
       $anggota = db::table('profil_user')
             ->join('jurusan', 'profil_user.id_jurusan', '=', 'jurusan.id')
@@ -256,9 +266,35 @@ class AnggotaUkmController extends Controller
      * @param  \App\AnggotaUkm  $anggotaUkm
      * @return \Illuminate\Http\Response
      */
-    public function show(AnggotaUkm $anggotaUkm)
+    public function show(AnggotaUkm $id)
     {
-        //
+      if(Auth::guard('anggotaUkm')->check()){
+        if (!$this->pemilikAnggotaUkm($id)){
+          return redirect()->back();
+        }else{
+          $id_ukm = Session::get('ukmDipilih');
+          $id_user = Auth::guard('anggotaUkm')->user()->id;
+          $profil = ProfilUser::where('id_user', $id_user)->get();
+        }
+      }else if(Auth::guard('monitoring')->check()){
+
+      }
+        $ukm = Ukm::where('id', $id_ukm)->get();
+        $anggota = db::table('profil_user')
+              ->join('jurusan', 'profil_user.id_jurusan', '=', 'jurusan.id')
+              ->join('anggota', 'profil_user.id_user', '=', 'anggota.id_user')
+              ->join('user', 'profil_user.id_user', '=', 'user.id')
+              ->select('profil_user.*',
+              'jurusan.id AS id_jurusanAsli',
+              'jurusan.nama_jurusan',
+              'user.id AS id_user',
+              'user.username',
+              'anggota.id AS id_anggota',
+              'anggota.status')
+              ->where('anggota.id', $id->id)->get();
+
+        $jurusan = Jurusan::all();
+        return view('anggotaUkm.anggotaUkm.show', compact('anggota', 'jurusan','ukm', 'profil'));
     }
 
     /**
@@ -424,12 +460,19 @@ class AnggotaUkmController extends Controller
     }
 
     public function cetak_pdf(AnggotaUkm $id){
-
-      if (!$this->pemilikAdminUkm($id)){
-        return redirect()->back();
+      if(Auth::guard('anggotaUkm')->check()){
+        if (!$this->pemilikAnggotaUkm($id)){
+          return redirect()->back();
+        }else{
+          $id_ukm = Session::get('ukmDipilih');
+        }
+      }else if(Auth::guard('adminUkm')->check()){
+        if (!$this->pemilikAdminUkm($id)){
+          return redirect()->back();
+        }else{
+          $id_ukm = Auth::guard('adminUkm')->user()->id_ukm;
+        }
       }
-
-      $id_ukm = Auth::guard('adminUkm')->user()->id_ukm;
       $ukm = Ukm::where('id', $id_ukm)->get();
       $anggota = db::table('profil_user')
             ->join('jurusan', 'profil_user.id_jurusan', '=', 'jurusan.id')

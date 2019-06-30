@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use App\BeritaUkm;
 use App\Ukm;
+use App\ProfilUser;
 use Auth;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Http\AuthTraits\OwnsRecord;
 use PDF;
+use Session;
 
 class BeritaUkmController extends Controller
 {
@@ -100,7 +102,20 @@ class BeritaUkmController extends Controller
           return view('adminUkm.beritaUkm.show', compact('ukm', 'berita'));
 
       }else if(Auth::guard('anggotaUkm')->check()){ //----------------------------------------------------jika anggota UKM
-        //
+          if(Session::has('ukmDipilih')){
+            $berita = BeritaUkm::where('id', $id->id)->get();
+          }else{
+            $berita = BeritaUkm::where('id', $id->id)->where('sifat_berita', 'umum')->get();
+          }
+          $id_user = Auth::guard('anggotaUkm')->user()->id;
+          $profil = ProfilUser::where('id_user', $id_user)->get();
+          $ukm = UKM::where('id', $berita[0]['id_ukm'])->get();
+          if(Session::has('ukmDipilih')){
+            return view('anggotaUkm.beritaUkm.show', compact('berita', 'ukm', 'profil'));
+          }else{
+            return view('anggotaUkm.beritaUkm.show', compact('berita', 'ukm', 'profil'));
+          }
+
       }else if(Auth::guard('admin')->check()){ // --------------------------------------------------------jika admin
 
           $berita = BeritaUkm::where('id', $id->id)->where('sifat_berita', 'umum')->get();
@@ -186,11 +201,22 @@ class BeritaUkmController extends Controller
 
     public function cetak_pdf(BeritaUkm $id){
 
+    $berita = BeritaUkm::where('id', $id->id)->get();
+
+    if(Auth::guard('adminUkm')->check()){
       if (!$this->pemilikAdminUkm($id)){
         return redirect()->back();
       }
-
-      $id_ukm = Auth::guard('adminUkm')->user()->id_ukm;
+    }else{
+      if($berita[0]->sifat_berita == 'internal'){
+        if(Session::has('ukmDipilih')){
+        
+        }else{
+          return redirect()->back();
+        }
+      }
+    }
+      $id_ukm = $id->id_ukm;
       $ukm = Ukm::where('id', $id_ukm)->get();
       $berita = BeritaUkm::where('id', $id->id)->get();
 
@@ -200,13 +226,32 @@ class BeritaUkmController extends Controller
       return $pdf->download($berita[0]['judul_berita']);
     }
 
-    public function semuaBerita(){
-      $id_ukm = Auth::guard('adminUkm')->user()->id_ukm;
+    public function semuaBerita(Ukm $id){
+      if(Auth::guard('anggotaUkm')->check()){
+        if(Session::has('ukmDipilih')){
+          $id_ukm = Session::get('ukmDipilih');
+        }else{
+          $id_ukm = $id->id;
+        }
+        $id_user = Auth::guard('anggotaUkm')->user()->id;
+        $profil = ProfilUser::where('id_user', $id_user)->get();
+      }else if(Auth::guard('adminUkm')->check()){
+        $id_ukm = Auth::guard('adminUkm')->user()->id_ukm;
+      }
       $ukm = Ukm::where('id', $id_ukm)->get();
       $berita = BeritaUkm::where('id_ukm', $id_ukm)->limit(10)->get();
       $beritaU = BeritaUkm::where('id_ukm', $id_ukm)->where('sifat_berita', 'umum')->limit(10)->get();
       $beritaI = BeritaUkm::where('id_ukm', $id_ukm)->where('sifat_berita', 'internal')->limit(10)->get();
 
-      return view('adminUkm.beritaUkm.semuaBerita', compact('ukm', 'berita', 'beritaU', 'beritaI'));
+      if(Auth::guard('anggotaUkm')->check()){
+        if(Session::has('ukmDipilih')){
+          return view('anggotaUkm.beritaUkm.anggotaIndex', compact('ukm', 'berita', 'beritaU','beritaI', 'profil'));
+        }else{
+          return view('anggotaUkm.beritaUkm.index', compact('ukm', 'berita', 'beritaU', 'profil'));
+        }
+      }else if(Auth::guard('adminUkm')->check()){
+        return view('adminUkm.beritaUkm.semuaBerita', compact('ukm', 'berita', 'beritaU', 'beritaI'));
+      }
     }
+
 }

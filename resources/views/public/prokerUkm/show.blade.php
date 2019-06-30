@@ -1,4 +1,3 @@
-@extends('adminUkm.index')
 @section('content')
 
 <link rel="stylesheet" href="{{url('/assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css')}}">
@@ -12,8 +11,13 @@
     <!-- <small>Lihat Profil UKM</small> -->
   </h1>
   <ol class="breadcrumb">
-    <li><a href="{{route('prokerUkm.index')}}"><i class="fa fa-user"></i>Program Kerja</a></li>
-    <li class="active">Detail Proker</li>
+    @if(Auth::guard('anggotaUkm')->check())
+      <li><a href="{{route('anggotaUkm.ukm.dashboardProfilUkm')}}"><i class="fa fa-dashboard"></i>Dashboard</a></li>
+    @elseif(Auth::guard('monitoring')->check())
+      <li><a href="#"><i class="fa fa-tv"></i>Monitoring</a></li>
+    @endif
+    <li><a href="#">Program Kerja</a></li>
+    <li class="active">Detail</li>
   </ol>
   </section>
 
@@ -24,7 +28,7 @@
           <div class="box box-primary">
             <div class="box-header with-border">
               <h3 class="box-title">Deskripsi Program Kerja Ukm</h3>
-              <a href="{{route('prokerUkm.cetak_pdf', $proker[0]['id'])}}" class="btn btn-xs btn-primary pull-right">Simpan PDF &nbsp; <i class="fa fa-file-pdf-o"></i></a>
+              <a href="{{route('public.prokerUkm.cetak_pdf', $proker[0]['id'])}}" class="btn btn-xs btn-primary pull-right">Simpan PDF &nbsp; <i class="fa fa-file-pdf-o"></i></a>
             </div>
             <!-- /.box-header -->
             <!-- form start -->
@@ -69,7 +73,7 @@
             <div class="box-body">
               <span>Proposal Program Kerja</span>
               @if($proker[0]['proposal'] != null)
-                <a data-toggle="tooltip" title="Download Proposal" href="{{url('proker-ukm/proposal/download/' .$proker[0]['id'])}}">
+                <a data-toggle="tooltip" title="Download Proposal" href="{{url('ukm/dashboard/proker-ukm/proposal/download/' .$proker[0]['id'])}}">
                   <button class="btn btn-sm btn-primary col-md-12">Download Proposal <i class="fa fa-download"></i></button>
                 </a>
               @else
@@ -80,7 +84,7 @@
               <br></br><hr>
               <span>Laporan Program Kerja</span>
               @if($proker[0]['laporan'] != null)
-                <a data-toggle="tooltip" title="Download Laporan" href="{{url('proker-ukm/laporan/download/' .$proker[0]['id'])}}">
+                <a data-toggle="tooltip" title="Download Laporan" href="{{url('ukm/dashboard/proker-ukm/laporan/download/' .$proker[0]['id'])}}">
                   <button class="btn btn-sm btn-primary col-md-12">Download Laporan <i class="fa fa-download"></i></button>
                 </a>
               @else

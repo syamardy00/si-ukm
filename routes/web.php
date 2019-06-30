@@ -38,7 +38,7 @@ Route::group(['middleware' => 'guest'], function(){
 
 Route::group(['middleware' => 'auth:admin'], function(){
 
-  Route::get('/admin', 'AdminController@index')->name('admin');
+  Route::get('/ukm/kelola-ukm', 'UkmController@index')->name('admin');
   Route::get('/info-ukm/{ukm}', 'ProfilUkmController@index')->name('infoUkm.index');
 
   Route::get('/kelola-akun', 'UserController@index')->name('user.index');
@@ -123,9 +123,50 @@ Route::group(['middleware' => 'auth:adminUkm'], function(){
 
 });
 
-Route::group(['middleware' => ['auth:bem', 'auth:wd1']], function(){
+Route::group(['middleware' => 'auth:anggotaUkm'], function(){
+  Route::get('/ukm', 'UkmController@anggotaUkm_index')->name('anggotaUkm.ukm.index');
+  Route::get('/profil-saya', 'ProfilUserController@index')->name('anggotaUkm.profilUser.index');
+  Route::patch('/profil-saya/update', 'ProfilUserController@update')->name('anggotaUkm.profilUser.update');
+
+  Route::post('/ukm/dashboard', 'ProfilUkmController@indexAdminUkm')->name('anggotaUkm.ukm.dashboard');
+  Route::get('/ukm/dashboard/', 'ProfilUkmController@indexAdminUkm')->name('anggotaUkm.ukm.dashboardProfilUkm');
+
+  Route::get('/ukm/dashboard/galeri-foto', 'GaleriFotoController@index')->name('anggotaUkm.galeriFoto.index');
+
+  Route::get('/ukm/dashboard/berita-ukm', 'BeritaUkmController@semuaBerita')->name('anggotaUkm.beritaUkm.index');
+  Route::get('/ukm/dashboard/berita-ukm/baca/{id}', 'BeritaUkmController@show')->name('anggotaUkm.beritaUkm.show');
+
+  Route::get('/ukm/dashboard/anggota-ukm', 'AnggotaUkmController@index')->name('anggotaUkm.anggotaUkm.index');
+  Route::get('/ukm/dashboard/anggota-ukm/detail/{id}', 'AnggotaUkmController@show')->name('anggotaUkm.anggotaUkm.show');
+  Route::get('/ukm/dashboard/anggota-ukm/data-anggota', 'AnggotaUkmController@data_anggota')->name('anggotaUkm.anggotaUkm.data_anggota');
+
+  Route::get('/ukm/dashboard/proker-ukm', 'ProkerUkmController@index')->name('anggotaUkm.prokerUkm.index');
+  Route::get('/ukm/dashboard/proker-ukm/detail/{id}', 'ProkerUkmController@show')->name('anggotaUkm.prokerUkm.show');
+  Route::get('/ukm/dashboard/proker-ukm/data-proker', 'ProkerUkmController@data_proker')->name('anggotaUkm.prokerUkm.data_proker');
+  Route::get('/ukm/dashboard/proker-ukm/proposal/download/{id}/', 'ProkerUkmController@download_proposal')->name('anggotaUkm.prokerUkm.download.proposal');
+  Route::get('/ukm/dashboard/proker-ukm/laporan/download/{id}/', 'ProkerUkmController@download_laporan')->name('anggotaUkm.prokerUkm.download.laporan');
+
+  Route::get('/ukm/dashboard/calon-anggota', 'CalonAnggotaController@index')->name('anggotaUkm.calonAnggota.index');
+  Route::get('/ukm/dashboard/calon-anggota/detail/{id}', 'CalonAnggotaController@show')->name('anggotaUkm.anggotaUkm.calonAnggota.index');
+  Route::get('/ukm/dashboard/calon-anggota/data-calon-anggota', 'CalonAnggotaController@data_calonAnggota')->name('anggotaUkm.calonAnggota.data_calon_anggota');
+
+  Route::get('/ukm/profil-ukm/{id}', 'ProfilUkmController@profilUkm')->name('anggotaUkm.ukm.profilUkm');
+  Route::get('/ukm/profil-ukm/{id}/berita', 'BeritaUkmController@semuaBerita')->name('public.beritaUkm.index');
+  Route::get('/ukm/profil-ukm/berita/baca/{id}', 'BeritaUkmController@show')->name('public.beritaUkm.show');
+  Route::get('/ukm/profil-ukm/{id}/galeri-foto', 'GaleriFotoController@index')->name('public.galeriFoto.index');
 
 });
+
+Route::group(['middleware' => ['auth:bem', 'auth:wd1']], function(){
+  // prefix pakai /monitoring
+});
+
+
+Route::get('public/berita/baca/cetak-pdf/{id}', 'BeritaUkmController@cetak_pdf')->name('public.beritaUkm.cetak_pdf');
+Route::get('public/anggota-ukm/cetak-pdf/{id}', 'AnggotaUkmController@cetak_pdf')->name('public.anggotaUkm.cetak_pdf');
+Route::get('public/proker-ukm/detail/cetak-pdf/{id}', 'ProkerUkmController@cetak_pdf')->name('public.prokerUkm.cetak_pdf');
+Route::get('public/calon-anggota/detail/cetak-pdf/{id}', 'CalonAnggotaController@cetak_pdf')->name('public.calonAnggota.cetak_pdf');
+
 
 
 

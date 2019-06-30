@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Ukm;
+use App\ProfilUser;
+use App\anggotaUkm;
+use Auth;
 use Illuminate\Http\Request;
 use App\User;
 use DB;
@@ -17,9 +20,16 @@ class UkmController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    // admin UKM =========================================================================================================================
     public function index()
     {
-        //
+      // $id = Auth::guard('adminUkm')->user()->id;
+      //
+      // $profil = ProfilUser::where('id_user', $id)->get();
+      $ukm = Ukm::All();
+
+      return view('admin.ukm.index', compact('profil', 'ukm'));
     }
 
     /**
@@ -43,24 +53,6 @@ class UkmController extends Controller
 
       $countUser = User::where('username',$request->input('username'))->count();
       $countUkm = Ukm::where('nama_ukm', $request->input('nama_ukm'))->count();
-
-      // if($countUkm>0){
-      //     Session::flash('message', 'Nama Ukm telah terdaftar!');
-      //     Session::flash('message_type', 'danger');
-      //     return redirect()->to('/ukm/tambah');
-      //
-      // }
-      // if($countUser>0){
-      //     Session::flash('message', 'Username sudah terpakai!');
-      //     Session::flash('message_type', 'danger');
-      //     return redirect()->to('/ukm/tambah');
-      // }
-
-      // $this->validate($request, [
-      //     'nama_ukm' => 'required|string|max:255|unique:ukm',
-      //     'username' => 'required|string|max:20|unique:user',
-      //     'password' => 'required'
-      // ]);
 
       $validator = $this->validate($request, [
         'nama_ukm' => 'required|string|min:3|max:255|unique:ukm',
@@ -91,58 +83,48 @@ class UkmController extends Controller
          ]);
 
         // alert()->success('Berhasil.','Ukm Baru Berhasil Dibuat!');
-        return redirect()->to('/admin')->with('berhasil', 'UKM Baru Berhasil Ditambahkan.');
+        return redirect()->to('/ukm/kelola-ukm')->with('berhasil', 'UKM Baru Berhasil Ditambahkan.');
 
       }else{
         return redirect()->to('/ukm/tambah')->withErrors($validator)->withInput();
       }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Ukm  $ukm
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Ukm $ukm)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Ukm  $ukm
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Ukm $ukm)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Ukm  $ukm
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Ukm $ukm)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Ukm  $ukm
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Ukm $ukm)
     {
       User::where('id_ukm', $ukm->id)->delete();
       $ukm->delete();
-      return redirect()->to('/admin')->with('berhasil', 'UKM Berhasil Dihapus.');
+      return redirect()->to('/ukm/kelola-ukm')->with('berhasil', 'UKM Berhasil Dihapus.');
       // return $ukm->id;
     }
+
+
+    // anggota UKM =========================================================================================================================
+    public function anggotaUkm_index()
+    {
+      if(Session::has('ukmDipilih')){
+        Session::forget('ukmDipilih');
+      }
+      $id = Auth::guard('anggotaUkm')->user()->id;
+
+      $profil = ProfilUser::where('id_user', $id)->get();
+      $anggota = AnggotaUkm::where('id_user', $id)->get();
+
+      $dUkm = UKM::orderBy('nama_ukm', 'ASC');
+      foreach($anggota as $a){
+        $myUkm[] = Ukm::where('id', $a->id_ukm)->get();
+      }
+
+      foreach($myUkm as $m){
+        $ukm = $dUkm->where('id', '!=', $m[0]->id)->get();
+      }
+
+      // return $myUkm[1][0]->nama_ukm;
+      //return $arrayUkm[0]->nama_ukm;
+      //return $profil[0]['nama'];
+      return view('anggotaUkm.ukm.index', compact('profil', 'ukm', 'myUkm'));
+
+    }
+
+
 }

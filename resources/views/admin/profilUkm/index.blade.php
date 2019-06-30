@@ -49,7 +49,11 @@
               <div class="description-block" style="text-align: left; min-height: 70px;">
                 <h5 class="description-header" style="margin-top: -25px;">Profil</h5>
                 <span>
-                  {{$ukm[0]['profil']}}
+                  @if($ukm[0]['profil'])
+                    {{$ukm[0]['profil']}}
+                  @else
+                    <h4><center>Data Belum Ada</center></h4>
+                  @endif
                 </span>
               </div>
             </div>
@@ -136,7 +140,11 @@
           </div>
           <!-- /.box-header -->
           <div class="box-body">
-            {{$ukm[0]['visi']}}
+            @if($ukm[0]['visi'])
+              {{$ukm[0]['visi']}}
+            @else
+              <h4><center>Data Belum Ada</center></h4>
+            @endif
           </div>
           <!-- /.box-body -->
         </div>
@@ -151,7 +159,11 @@
           </div>
           <!-- /.box-header -->
           <div class="box-body">
-            {!! $ukm[0]['misi'] !!}
+            @if($ukm[0]['misi'])
+              {!! $ukm[0]['misi'] !!}
+            @else
+              <h4><center>Data Belum Ada</center></h4>
+            @endif
           </div>
           <!-- /.box-body -->
         </div>

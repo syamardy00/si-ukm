@@ -1,4 +1,3 @@
-@extends('adminUkm.index')
 @section('content')
 
 <section class="content-header">
@@ -7,8 +6,11 @@
   <!-- <small>Lihat Profil UKM</small> -->
 </h1>
 <ol class="breadcrumb">
-  <li><a href="#"><i class="fa fa-user"></i> Profil UKM</a></li>
-  <li class="active">Lihat Profil UKM</li>
+  @if(Auth::guard('anggotaUkm')->check())
+    <li class="active"><a href="{{route('anggotaUkm.ukm.dashboardProfilUkm')}}"><i class="fa fa-user"></i>Profil UKM</a></li>
+  @elseif(Auth::guard('monitoring')->check())
+    <li><a href="#"><i class="fa fa-tv"></i>Monitoring</a></li>
+  @endif
 </ol>
 </section>
 
@@ -49,7 +51,11 @@
               <div class="description-block" style="text-align: left; min-height: 70px;">
                 <h5 class="description-header" style="margin-top: -25px;">Profil</h5>
                 <span>
-                  {{$ukm[0]['profil']}}
+                  @if($ukm[0]['profil'])
+                    {{$ukm[0]['profil']}}
+                  @else
+                    <h4><center>Data Belum Ada</center></h4>
+                  @endif
                 </span>
               </div>
             </div>
@@ -126,73 +132,6 @@
 
   <div class="row">
 
-    <div class="col-lg-3 col-xs-6">
-      <div class="small-box bg-aqua">
-        <div class="inner">
-          <h3>{{$jAnggota}}</h3>
-          <span>Anggota Aktif</span>
-        </div>
-        <div class="icon">
-          <i class="fa fa-user"></i>
-        </div>
-        <a href="{{route('anggotaUkm.index')}}" class="small-box-footer">Selengkapnya <i class="fa fa-arrow-circle-right"></i></a>
-      </div>
-    </div>
-
-    <div class="col-lg-3 col-xs-6">
-      <div class="small-box bg-yellow">
-        <div class="inner">
-          <h3>{{$jProker}}</h3>
-          <span>Proker Belum Terlaksana</span>
-        </div>
-        <div class="icon">
-          <i class="fa fa-calendar"></i>
-        </div>
-        <a href="{{route('prokerUkm.index')}}" class="small-box-footer">Selengkapnya <i class="fa fa-arrow-circle-right"></i></a>
-      </div>
-    </div>
-
-    <div class="col-lg-3 col-xs-6">
-      <div class="small-box bg-green">
-        <div class="inner">
-          <h3>{{$jCalonAnggota}}</h3>
-          <span>Calon Anggota Baru Tahun Ini</span>
-        </div>
-        <div class="icon">
-          <i class="fa fa-child"></i>
-        </div>
-        <a href="{{route('calonAnggota.index')}}" class="small-box-footer">Selengkapnya <i class="fa fa-arrow-circle-right"></i></a>
-      </div>
-    </div>
-
-    <div class="col-lg-3 col-xs-6">
-      <div class="small-box bg-red">
-        @if($ukm[0]['pendaftaran'] == 0)
-          <div class="inner">
-              <h3>Non Aktif</h3>
-              <span>Form Pendaftaran Calon Anggota</span>
-          </div>
-          <div class="icon">
-            <i class="fa fa-ban"></i>
-          </div>
-          <a href="#" data-toggle="modal" data-target="#aktifkan-form" class="small-box-footer">Aktifkan Form <i class="fa fa-arrow-circle-right"></i></a>
-        @else
-          <div class="inner">
-              <h3>Aktif</h3>
-              <span>Form Pendaftaran Calon Anggota</span>
-          </div>
-          <div class="icon">
-            <i class="fa fa-check"></i>
-          </div>
-          <a href="#" data-toggle="modal" data-target="#nonaktifkan-form" class="small-box-footer">Non-Aktifkan Form <i class="fa fa-arrow-circle-right"></i></a>
-        @endif
-      </div>
-    </div>
-
-  </div>
-
-  <div class="row">
-
     <!-- kolom kiri -->
     <div class="col-md-6" style="padding:0px;">
       <div class="col-md-12">
@@ -203,7 +142,11 @@
           </div>
           <!-- /.box-header -->
           <div class="box-body">
-            {{$ukm[0]['visi']}}
+            @if($ukm[0]['visi'])
+              {{$ukm[0]['visi']}}
+            @else
+              <h4><center>Data Belum Ada</center></h4>
+            @endif
           </div>
           <!-- /.box-body -->
         </div>
@@ -218,7 +161,11 @@
           </div>
           <!-- /.box-header -->
           <div class="box-body">
-            {!! $ukm[0]['misi'] !!}
+            @if($ukm[0]['misi'])
+              {!! $ukm[0]['misi'] !!}
+            @else
+              <h4><center>Data Belum Ada</center></h4>
+            @endif
           </div>
           <!-- /.box-body -->
         </div>
@@ -267,7 +214,7 @@
             </div>
             @if(sizeOf($foto) > 0)
             <hr>
-            <center><h5><a href="{{route('galeriFoto.index')}}"><b>Selengkapnya</b></a></h5></center>
+            <center><h5><a href="{{route('public.galeriFoto.index', $ukm[0]->id)}}"><b>Selengkapnya</b></a></h5></center>
             @endif
           </div>
           <!-- /.box-body -->
@@ -305,77 +252,12 @@
       <div class="col-md-12">
         <div class="nav-tabs-custom">
           <ul class="nav nav-tabs">
-          <li class="active"><a href="#semua" data-toggle="tab">Semua Berita</a></li>
-          <li><a href="#internal" data-toggle="tab">Berita Internal</a></li>
-          <li><a href="#umum" data-toggle="tab">Berita Umum</a></li>
+          <li class="active"><a href="#semua" data-toggle="tab">Berita</a></li>
           </ul>
           <div class="tab-content" style="min-height:80px; max-height:580px; overflow: scroll; overflow-x: hidden;">
 
-          <div class="active tab-pane" id="semua">
-            @if(sizeOf($berita) == 0)
-              <center><h4>Belum Ada Berita</h4></center>
-            @endif
-            @foreach($berita as $b)
-            <!-- Post -->
-            <div class="post">
-              <div class="user-block">
-                <span class="username" style="margin-left: 0px;">
-                  <a href="{{route('beritaUkm.show', $b->id)}}">{{$b->judul_berita}}</a>
-                </span>
-                <span class="description" style="margin-left: 0px;">
-                  <i class="fa fa-calendar"></i> &nbsp;{{$b->tanggal_berita}} | &nbsp;
-                  <i class="fa fa-lock"></i> &nbsp;{{$b->sifat_berita}}
-                </span>
-              </div>
-              <!-- /.user-block -->
-              <p>
-                {{ strip_tags(str_replace("&nbsp;", '', substr($b->isi_berita, 0, 300))) }}
-              </p>
-              <ul class="list-inline">
-              <li class="pull-right">
-                <a href="{{route('beritaUkm.show', $b->id)}}" class="link-black text-sm"><i class="fa fa-eye margin-r-5"></i> Baca Berita
-                  </a></li>
-              </ul>
-              <br>
-            </div>
-            @endforeach
-
-          </div>
-          <!-- /.tab-pane -->
-
-          <div class="tab-pane" id="internal">
-            @if(sizeOf($berita) == 0)
-              <center><h4>Belum Ada Berita</h4></center>
-            @endif
-            @foreach($beritaI as $b)
-            <!-- Post -->
-            <div class="post">
-              <div class="user-block">
-                <span class="username" style="margin-left: 0px;">
-                  <a href="{{route('beritaUkm.show', $b->id)}}">{{$b->judul_berita}}</a>
-                </span>
-                <span class="description" style="margin-left: 0px;">
-                  <i class="fa fa-calendar"></i> &nbsp;{{$b->tanggal_berita}} | &nbsp;
-                  <i class="fa fa-lock"></i> &nbsp;{{$b->sifat_berita}}
-                </span>
-              </div>
-              <!-- /.user-block -->
-              <p>
-                {{ strip_tags(str_replace("&nbsp;", '', substr($b->isi_berita, 0, 300))) }}
-              </p>
-              <ul class="list-inline">
-              <li class="pull-right">
-                <a href="{{route('beritaUkm.show', $b->id)}}" class="link-black text-sm"><i class="fa fa-eye margin-r-5"></i> Baca Berita
-                  </a></li>
-              </ul>
-              <br>
-            </div>
-            @endforeach
-
-          </div>
-
-          <div class="tab-pane" id="umum">
-            @if(sizeOf($berita) == 0)
+          <div class="active tab-pane" id="umum">
+            @if(sizeOf($beritaU) == 0)
               <center><h4>Belum Ada Berita</h4></center>
             @endif
             @foreach($beritaU as $b)
@@ -383,7 +265,7 @@
             <div class="post">
               <div class="user-block">
                 <span class="username" style="margin-left: 0px;">
-                  <a href="{{route('beritaUkm.show', $b->id)}}">{{$b->judul_berita}}</a>
+                  <a href="{{url('/ukm/profil-ukm/berita/baca/'.$b->id)}}">{{$b->judul_berita}}</a>
                 </span>
                 <span class="description" style="margin-left: 0px;">
                   <i class="fa fa-calendar"></i> &nbsp;{{$b->tanggal_berita}} | &nbsp;
@@ -396,7 +278,7 @@
               </p>
               <ul class="list-inline">
               <li class="pull-right">
-                <a href="{{route('beritaUkm.show', $b->id)}}" class="link-black text-sm"><i class="fa fa-eye margin-r-5"></i> Baca Berita
+                <a href="{{url('/ukm/profil-ukm/berita/baca/'.$b->id)}}" class="link-black text-sm"><i class="fa fa-eye margin-r-5"></i> Baca Berita
                   </a></li>
               </ul>
               <br>
@@ -406,7 +288,7 @@
           </div>
           @if(sizeOf($berita) > 0)
           <hr>
-          <center><h5><a href="{{route('beritaUkm.semuaBerita')}}"><b>Selengkapnya</b></a></h5></center>
+          <center><h5><a href="{{route('public.beritaUkm.index', $ukm[0]['id'])}}"><b>Selengkapnya</b></a></h5></center>
           @endif
           </div>
           <!-- /.tab-content -->
@@ -433,56 +315,6 @@
       <img class="" src="{{url('/foto/default-image.png')}}" style="margin:auto; top:0; right:0; left:0; bottom:0; position:absolute; width:500px;">
     @endif
   </div>
-
-  <div class="modal modal-info fade" id="aktifkan-form">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title">Konfirmasi</h4>
-        </div>
-        <div class="modal-body">
-          <p><b>Anda akan yakin akan mengaktifkan Form Pendaftaran Calon Anggota baru?</b><br>
-          Setelah form pendaftaran calon anggota baru aktif maka calon anggota dapat mendaftarkan diri melalui sistem informasi ini.</p>
-        </div>
-        <div class="modal-footer">
-          <!-- <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button> -->
-                    <a href="{{route('calonAnggota.ubah.status')}}"><button type="submit" class="btn btn-outline">Ya, Aktifkan</button></a>
-                    <button type="button" data-dismiss="modal" class="btn btn-outline">Batal</button>
-
-        </div>
-      </div>
-      <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-  </div>
-
-
-  <div class="modal modal-danger fade" id="nonaktifkan-form">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title">Konfirmasi</h4>
-        </div>
-        <div class="modal-body">
-          <p><b>Anda akan yakin akan menonaktifkan Form Pendaftaran Calon Anggota baru?</b><br>
-          Setelah form pendaftaran calon anggota baru tidak aktif maka calon anggota tidak dapat mendaftarkan diri melalui sistem informasi ini.</p>
-        </div>
-        <div class="modal-footer">
-          <!-- <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button> -->
-                    <a href="{{route('calonAnggota.ubah.status')}}"><button type="submit" class="btn btn-outline">Ya, Non-Aktifkan</button></a>
-                    <button type="button" data-dismiss="modal" class="btn btn-outline">Batal</button>
-
-        </div>
-      </div>
-      <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-  </div>
-
 
 </section>
 

@@ -7,8 +7,10 @@ use Illuminate\Http\Request;
 use Image;
 use File;
 use App\Ukm;
+use App\ProfilUser;
 use Carbon\Carbon;
 use Auth;
+use Session;
 use App\Http\AuthTraits\OwnsRecord;
 
 class GaleriFotoController extends Controller
@@ -19,15 +21,30 @@ class GaleriFotoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Ukm $id)
     {
+      if(Auth::guard('adminUkm')->check()){
         $id_ukm = Auth::guard('adminUkm')->user()->id_ukm;
+      }else if(Auth::guard('anggotaUkm')->check()){
+        if(Session::has('ukmDipilih')){
+          $id_ukm = Session::get('ukmDipilih');
+        }else{
+          $id_ukm = $id->id;
+        }
+        $id_user = Auth::guard('anggotaUkm')->user()->id;
+        $profil = ProfilUser::where('id_user', $id_user)->get();
+      }
         $ukm = Ukm::where('id', $id_ukm)->get();
 
         $foto = GaleriFoto::where('id_ukm', $id_ukm)->orderBy('id', 'DESC')->get();
         $hitung = GaleriFoto::where('id_ukm', $id_ukm)->count();
 
+      if(Auth::guard('adminUkm')->check()){
         return view('adminUkm.galeriFoto.index', compact('ukm', 'foto', 'hitung'));
+      }else if(Auth::guard('anggotaUkm')->check()){
+        return view('anggotaUkm.galeriFoto.index', compact('ukm', 'foto', 'hitung', 'profil'));
+      }
+
     }
 
     /**

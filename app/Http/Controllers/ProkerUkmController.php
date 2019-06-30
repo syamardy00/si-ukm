@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use Auth;
 use App\ProkerUkm;
 use App\Ukm;
+use App\ProfilUser;
 use Carbon\Carbon;
 use File;
 use Illuminate\Http\Request;
 use App\Http\AuthTraits\OwnsRecord;
 use PDF;
+use Session;
 
 class ProkerUkmController extends Controller
 {
@@ -21,6 +23,11 @@ class ProkerUkmController extends Controller
      */
     public function index()
     {
+      if(Session::has('ukmDipilih')){
+        $id_user = Auth::guard('anggotaUkm')->user()->id;
+        $profil = ProfilUser::where('id_user', $id_user)->get();
+        return view('anggotaUkm.prokerUkm.index', compact('profil'));
+      }
         $id_ukm = Auth::guard('adminUkm')->user()->id_ukm;
         $ukm = Ukm::where('id', $id_ukm)->get();
         $dProker = ProkerUkm::where('id_ukm', $id_ukm)->get();
@@ -29,27 +36,43 @@ class ProkerUkmController extends Controller
 
     public function data_proker()
     {
+      if(Session::has('ukmDipilih')){
+        $id_ukm = Session::get('ukmDipilih');
+      }else{
         $id_ukm = Auth::guard('adminUkm')->user()->id_ukm;
-        $ukm = Ukm::where('id', $id_ukm)->get();
+      }
+      $ukm = Ukm::where('id', $id_ukm)->get();
 
-        $proker = ProkerUKM::where('id_ukm', $id_ukm)->orderBy('tgl_kegiatan', 'DESC')->get();
+      $proker = ProkerUKM::where('id_ukm', $id_ukm)->orderBy('tgl_kegiatan', 'DESC')->get();
 
-        return $proker;
+      return $proker;
     }
 
     public function download_proposal(ProkerUkm $id){
-        if (!$this->pemilikAdminUkm($id)){
-          return redirect()->back();
-        }
+        if(Auth::guard('adminUkm')->check()){
+          if (!$this->pemilikAdminUkm($id)){
+            return redirect()->back();
+          }
+        }else if(Auth::guard('anggotaUkm')->check()){
+          if (!$this->pemilikAnggotaUkm($id)){
+            return redirect()->back();
+          }
+       }
        $file = ('../public' .$id->proposal);
        $headers = ['Content-Type' => 'application/pdf', ];
        return response()->download($file, 'proposal ' .$id->nama_proker, $headers);
     }
 
     public function download_laporan(ProkerUkm $id){
-        if (!$this->pemilikAdminUkm($id)){
-          return redirect()->back();
-        }
+        if(Auth::guard('adminUkm')->check()){
+          if (!$this->pemilikAdminUkm($id)){
+            return redirect()->back();
+          }
+        }else if(Auth::guard('anggotaUkm')->check()){
+          if (!$this->pemilikAnggotaUkm($id)){
+            return redirect()->back();
+          }
+       }
        $file = ('../public' .$id->laporan);
        $headers = ['Content-Type' => 'application/pdf', ];
        return response()->download($file, 'laporan ' .$id->nama_proker, $headers);
@@ -185,6 +208,7 @@ class ProkerUkmController extends Controller
      */
     public function show(ProkerUkm $id)
     {
+      if(Auth::guard('adminUkm')->check()){
         if (!$this->pemilikAdminUkm($id)){
           return redirect()->back();
         }
@@ -193,6 +217,19 @@ class ProkerUkmController extends Controller
         $proker = ProkerUkm::where('id', $id->id)->get();
 
         return view('adminUkm.prokerUkm.show', compact('ukm', 'proker'));
+
+      }else if(Auth::guard('anggotaUkm')->check()){
+        if (!$this->pemilikAnggotaUkm($id)){
+          return redirect()->back();
+        }
+        $id_user = Auth::guard('anggotaUkm')->user()->id;
+        $profil = ProfilUser::where('id_user', $id_user)->get();
+        $id_ukm = Session::get('ukmDipilih');
+        $ukm = Ukm::where('id', $id_ukm)->get();
+        $proker = ProkerUkm::where('id', $id->id)->get();
+
+        return view('anggotaUkm.prokerUkm.show', compact('profil', 'proker', 'ukm'));
+      }
     }
 
     /**
@@ -323,11 +360,20 @@ class ProkerUkmController extends Controller
 
     public function cetak_pdf(ProkerUkm $id){
 
-      if (!$this->pemilikAdminUkm($id)){
-        return redirect()->back();
+      if(Auth::guard('anggotaUkm')->check()){
+        if (!$this->pemilikAnggotaUkm($id)){
+          return redirect()->back();
+        }else{
+          $id_ukm = Session::get('ukmDipilih');
+        }
+      }else if(Auth::guard('adminUkm')->check()){
+        if (!$this->pemilikAdminUkm($id)){
+          return redirect()->back();
+        }else{
+          $id_ukm = Auth::guard('adminUkm')->user()->id_ukm;
+        }
       }
 
-      $id_ukm = Auth::guard('adminUkm')->user()->id_ukm;
       $ukm = Ukm::where('id', $id_ukm)->get();
       $proker = ProkerUkm::where('id', $id->id)->get();
 
