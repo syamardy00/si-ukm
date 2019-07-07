@@ -39,3 +39,25 @@
   <!-- datatable -->
   <link rel="stylesheet" href="{{url('/assets/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css')}}">
   <link rel="stylesheet" href="{{url('/assets/bower_components/datatables.net/css/buttons.dataTables.min.css')}}">
+
+  <!-- loading -->
+
+<style type="text/css">
+  .preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    background-color: #fff;
+  }
+  .preloader .loading {
+    text-align:center;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    font: 14px arial;
+  }
+</style>

@@ -309,7 +309,7 @@
           <li><a href="#internal" data-toggle="tab">Berita Internal</a></li>
           <li><a href="#umum" data-toggle="tab">Berita Umum</a></li>
           </ul>
-          <div class="tab-content" style="min-height:80px; max-height:580px; overflow: scroll; overflow-x: hidden;">
+          <div class="tab-content" id="berita" style="min-height:80px; max-height:580px; overflow: scroll; overflow-x: hidden;">
 
           <div class="active tab-pane" id="semua">
             @if(sizeOf($berita) == 0)

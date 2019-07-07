@@ -32,7 +32,15 @@ class AnggotaUkmController extends Controller
       if(Session::has('ukmDipilih')){
         $id_user = Auth::guard('anggotaUkm')->user()->id;
         $profil = ProfilUser::where('id_user', $id_user)->get();
-        return view('anggotaUkm.anggotaUkm.index', compact('profil'));
+        $id_ukm = Session::get('ukmDipilih');
+        $ukm = Ukm::where('id', $id_ukm)->get();
+        return view('anggotaUkm.anggotaUkm.index', compact('profil', 'ukm'));
+      }
+      if(Session::has('monitoringUkmDipilih')){
+        $user = Auth::guard('monitoring')->user();
+        $id_ukm = Session::get('monitoringUkmDipilih');
+        $ukm = Ukm::where('id', $id_ukm)->get();
+        return view('monitoring.anggotaUkm.index', compact('user', 'ukm'));
       }
       $id = Auth::guard('adminUkm')->user()->id;
       $id_ukm = Auth::guard('adminUkm')->user()->id_ukm;
@@ -56,7 +64,9 @@ class AnggotaUkmController extends Controller
     public function data_anggota(){
       if(Session::has('ukmDipilih')){
         $id_ukm = Session::get('ukmDipilih');
-      }else{
+      }else if(Session::has('monitoringUkmDipilih')){
+        $id_ukm = Session::get('monitoringUkmDipilih');
+      }else if(Auth::guard('adminUkm')->check()){
         $id_ukm = Auth::guard('adminUkm')->user()->id_ukm;
       }
 
@@ -277,7 +287,8 @@ class AnggotaUkmController extends Controller
           $profil = ProfilUser::where('id_user', $id_user)->get();
         }
       }else if(Auth::guard('monitoring')->check()){
-
+          $id_ukm = Session::get('monitoringUkmDipilih');
+          $user = Auth::guard('monitoring')->user();
       }
         $ukm = Ukm::where('id', $id_ukm)->get();
         $anggota = db::table('profil_user')
@@ -294,7 +305,11 @@ class AnggotaUkmController extends Controller
               ->where('anggota.id', $id->id)->get();
 
         $jurusan = Jurusan::all();
-        return view('anggotaUkm.anggotaUkm.show', compact('anggota', 'jurusan','ukm', 'profil'));
+        if(Auth::guard('anggotaUkm')->check()){
+          return view('anggotaUkm.anggotaUkm.show', compact('anggota', 'jurusan','ukm', 'profil'));
+        }else if(Auth::guard('monitoring')->check()){
+          return view('monitoring.anggotaUkm.show', compact('anggota', 'jurusan','ukm', 'user'));
+        }
     }
 
     /**
@@ -472,6 +487,8 @@ class AnggotaUkmController extends Controller
         }else{
           $id_ukm = Auth::guard('adminUkm')->user()->id_ukm;
         }
+      }else if(Auth::guard('monitoring')->check()){
+        $id_ukm = Session::get('monitoringUkmDipilih');
       }
       $ukm = Ukm::where('id', $id_ukm)->get();
       $anggota = db::table('profil_user')

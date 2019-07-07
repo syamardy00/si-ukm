@@ -12,7 +12,7 @@
       @endif
       </div>
       <div class="pull-left info">
-        <p>{{substr($ukm[0]['nama_ukm'], 0, 22)}}</p>
+        <p style="font-size:9pt;">{{substr($ukm[0]['nama_ukm'], 0, 22)}}</p>
         <a href="#"><i class="fa fa-circle text-success"></i> Admin-UKM</a>
       </div>
     </div>

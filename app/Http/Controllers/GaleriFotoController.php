@@ -33,7 +33,12 @@ class GaleriFotoController extends Controller
         }
         $id_user = Auth::guard('anggotaUkm')->user()->id;
         $profil = ProfilUser::where('id_user', $id_user)->get();
+
+      }else if(Auth::guard('monitoring')->check()){
+        $id_ukm = Session::get('monitoringUkmDipilih');
+        $user = Auth::guard('monitoring')->user();
       }
+
         $ukm = Ukm::where('id', $id_ukm)->get();
 
         $foto = GaleriFoto::where('id_ukm', $id_ukm)->orderBy('id', 'DESC')->get();
@@ -43,6 +48,8 @@ class GaleriFotoController extends Controller
         return view('adminUkm.galeriFoto.index', compact('ukm', 'foto', 'hitung'));
       }else if(Auth::guard('anggotaUkm')->check()){
         return view('anggotaUkm.galeriFoto.index', compact('ukm', 'foto', 'hitung', 'profil'));
+      }else if(Auth::guard('monitoring')->check()){
+        return view('monitoring.galeriFoto.index', compact('ukm', 'foto', 'hitung', 'user'));
       }
 
     }

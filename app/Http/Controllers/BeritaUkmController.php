@@ -122,12 +122,11 @@ class BeritaUkmController extends Controller
           $ukm = UKM::where('id', $berita[0]['id_ukm'])->get();
           return view('admin.beritaUkm.show', compact('berita', 'ukm'));
 
-      }else if(Auth::guard('bem')->check()){ // --------------------------------------------------------jika bem
-        //
-      }else if(Auth::guard('wd1')->check()){ // --------------------------------------------------------jika wd1
-        //
-      }else{ // --------------------------------------------------------jika tidak login
-
+      }else if(Auth::guard('monitoring')->check()){ // --------------------------------------------------------jika Monitoring
+          $user = Auth::guard('monitoring')->user();
+          $berita = BeritaUkm::where('id', $id->id)->where('sifat_berita', 'umum')->get();
+          $ukm = UKM::where('id', $berita[0]['id_ukm'])->get();
+          return view('monitoring.beritaUkm.show', compact('berita', 'ukm', 'user'));
       }
     }
 
@@ -210,7 +209,7 @@ class BeritaUkmController extends Controller
     }else{
       if($berita[0]->sifat_berita == 'internal'){
         if(Session::has('ukmDipilih')){
-        
+
         }else{
           return redirect()->back();
         }
@@ -237,11 +236,21 @@ class BeritaUkmController extends Controller
         $profil = ProfilUser::where('id_user', $id_user)->get();
       }else if(Auth::guard('adminUkm')->check()){
         $id_ukm = Auth::guard('adminUkm')->user()->id_ukm;
+      }else if(Auth::guard('monitoring')->check()){
+        if(Session::has('monitoringUkmDipilih')){
+          $id_ukm = Session::get('monitoringUkmDipilih');
+        }else{
+          $id_ukm = $id->id;
+        }
+        $user = Auth::guard('monitoring')->user();
       }
+
+
       $ukm = Ukm::where('id', $id_ukm)->get();
       $berita = BeritaUkm::where('id_ukm', $id_ukm)->limit(10)->get();
       $beritaU = BeritaUkm::where('id_ukm', $id_ukm)->where('sifat_berita', 'umum')->limit(10)->get();
       $beritaI = BeritaUkm::where('id_ukm', $id_ukm)->where('sifat_berita', 'internal')->limit(10)->get();
+
 
       if(Auth::guard('anggotaUkm')->check()){
         if(Session::has('ukmDipilih')){
@@ -251,6 +260,8 @@ class BeritaUkmController extends Controller
         }
       }else if(Auth::guard('adminUkm')->check()){
         return view('adminUkm.beritaUkm.semuaBerita', compact('ukm', 'berita', 'beritaU', 'beritaI'));
+      }else if(Auth::guard('monitoring')->check()){
+        return view('monitoring.beritaUkm.index', compact('ukm', 'berita', 'beritaU', 'profil', 'user'));
       }
     }
 

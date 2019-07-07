@@ -73,7 +73,11 @@
             <div class="box-body">
               <span>Proposal Program Kerja</span>
               @if($proker[0]['proposal'] != null)
-                <a data-toggle="tooltip" title="Download Proposal" href="{{url('ukm/dashboard/proker-ukm/proposal/download/' .$proker[0]['id'])}}">
+                @if(Auth::guard('anggotaUkm')->check())
+                  <a data-toggle="tooltip" title="Download Proposal" href="{{url('ukm/dashboard/proker-ukm/proposal/download/' .$proker[0]['id'])}}">
+                @elseif(Auth::guard('monitoring')->check())
+                  <a data-toggle="tooltip" title="Download Proposal" href="{{url('monitoring/proker-ukm/proposal/download/' .$proker[0]['id'])}}">
+                @endif
                   <button class="btn btn-sm btn-primary col-md-12">Download Proposal <i class="fa fa-download"></i></button>
                 </a>
               @else
@@ -84,7 +88,11 @@
               <br></br><hr>
               <span>Laporan Program Kerja</span>
               @if($proker[0]['laporan'] != null)
-                <a data-toggle="tooltip" title="Download Laporan" href="{{url('ukm/dashboard/proker-ukm/laporan/download/' .$proker[0]['id'])}}">
+                @if(Auth::guard('anggotaUkm')->check())
+                  <a data-toggle="tooltip" title="Download Laporan" href="{{url('ukm/dashboard/proker-ukm/laporan/download/' .$proker[0]['id'])}}">
+                @elseif(Auth::guard('monitoring')->check())
+                  <a data-toggle="tooltip" title="Download Laporan" href="{{url('monitoring/proker-ukm/laporan/download/' .$proker[0]['id'])}}">
+                @endif
                   <button class="btn btn-sm btn-primary col-md-12">Download Laporan <i class="fa fa-download"></i></button>
                 </a>
               @else

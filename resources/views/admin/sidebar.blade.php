@@ -5,7 +5,7 @@
     <br>
     <div class="user-panel">
       <div class="pull-left image">
-        <img src="{{url('assets/dist/img/user2-160x160.jpg')}}" class="img-circle" alt="User Image">
+        <img src="{{url('foto/si-ukm.png')}}" class="img-circle" alt="User Image">
       </div>
       <div class="pull-left info">
         <p>SI-UKM Admin</p>
@@ -47,6 +47,19 @@
           <span class="pull-right-container">
           </span>
         </a>
+      </li>
+
+      <li class="treeview">
+        <a href="#">
+          <i class="fa fa-tv"></i> <span>Kelola Akun Monitoring</span>
+          <span class="pull-right-container">
+            <i class="fa fa-angle-left pull-right"></i>
+          </span>
+        </a>
+        <ul class="treeview-menu">
+          <li><a href="{{route('userMonitoring.create')}}"><i class="fa fa-plus"></i> Tambah UKM Baru</a></li>
+          <li><a href="{{route('userMonitoring.index')}}"><i class="fa fa-table"></i> Kelola UKM</a></li>
+        </ul>
       </li>
 
       <li>

@@ -5,6 +5,7 @@
     <title></title>
   </head>
   <body>
+
     <form method="POST" action="{{route('login')}}">
       {{ csrf_field() }}
       <input type="text" name="username" placeholder="username">

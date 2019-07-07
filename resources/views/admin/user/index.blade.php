@@ -3,12 +3,12 @@
 
 <section class="content-header">
   <h1>
-    Kelola Akun
+    Kelola Akun Admin UKM
     <!-- <small>Lihat Profil UKM</small> -->
   </h1>
   <ol class="breadcrumb">
     <li><a href="{{route('admin')}}"><i class="fa fa-user"></i>Admin</a></li>
-    <li class="active">Kelola akun</li>
+    <li class="active">Kelola akun admin UKM</li>
   </ol>
 </section>
 

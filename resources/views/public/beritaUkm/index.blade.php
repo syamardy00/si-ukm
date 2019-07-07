@@ -34,7 +34,11 @@
               <div class="post">
                 <div class="user-block">
                   <span class="username" style="margin-left: 0px;">
+                  @if(Auth::guard('monitoring')->check())
+                    <a href="{{url('/monitoring/berita-ukm/baca/'.$b->id)}}">{{$b->judul_berita}}</a>
+                  @else
                     <a href="{{url('/ukm/profil-ukm/berita/baca/'.$b->id)}}">{{$b->judul_berita}}</a>
+                  @endif
                   </span>
                   <span class="description" style="margin-left: 0px;">
                     <i class="fa fa-calendar"></i> &nbsp;{{$b->tanggal_berita}} | &nbsp;
@@ -47,8 +51,13 @@
                 </p>
                 <ul class="list-inline">
                 <li class="pull-right">
+                @if(Auth::guard('monitoring')->check())
+                  <a href="{{url('/monitoring/berita-ukm/baca/'.$b->id)}}" class="link-black text-sm"><i class="fa fa-eye margin-r-5"></i> Baca Berita
+                  </a></li>
+                @else
                   <a href="{{url('/ukm/profil-ukm/berita/baca/'.$b->id)}}" class="link-black text-sm"><i class="fa fa-eye margin-r-5"></i> Baca Berita
-                    </a></li>
+                  </a></li>
+                @endif
                 </ul>
                 <br>
               </div>

@@ -24,6 +24,10 @@ class ProfilUserController extends Controller
      */
     public function index()
     {
+      if(Session::has('ukmDipilih')){
+        $id_ukm = Session::get('ukmDipilih');
+        $ukm = Ukm::where('id', $id_ukm)->get();
+      }
       $id_user = Auth::guard('anggotaUkm')->user()->id;
       $profil = ProfilUser::where('id_user', $id_user)->get();
       $dataProfil = db::table('user')
@@ -36,7 +40,7 @@ class ProfilUserController extends Controller
             ->where('user.id', $id_user)->get();
 
       $jurusan = Jurusan::all();
-      return view('anggotaUkm.profilUser.index', compact('dataProfil', 'profil', 'jurusan'));
+      return view('anggotaUkm.profilUser.index', compact('dataProfil', 'profil', 'jurusan', 'ukm'));
     }
 
     /**

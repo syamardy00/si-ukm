@@ -57,6 +57,8 @@
 <script src="{{url('/assets/bower_components/datatables.net/js/buttons.html5.min.js')}}"></script>
 <script src="{{url('/assets/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js')}}"></script>
 
+@if(Auth::guard('anggotaUkm')->check())
+
 <script>
 
 $(document).ready(function() {
@@ -115,7 +117,68 @@ $(document).ready(function() {
   } );
 
 });
-
-
 </script>
+
+@elseif(Auth::guard('monitoring')->check())
+<script>
+
+$(document).ready(function() {
+    var printCounter = 0;
+
+  $('#data_anggota').append('<caption style="caption-side: bottom">Sistem Informasi UKM Politeknik TEDC Bandung.</caption>');
+
+  $('#data_anggota').DataTable( {
+  processing: true,
+  ajax: {
+      url: "{{route('monitoring.anggotaUkm.data_anggota')}}",
+      dataSrc: ""
+  },
+  columns: [
+      { "data": "nim" },
+      { "data": "nama" },
+      { "data": "nama_jurusan" },
+      { "data": "tahun_angkatan" },
+      { "data": "no_telepon" },
+      { "data": "status"},
+      { "data": "id",
+        "width": "75px",
+        "sClass": "text-center",
+        "orderable": false,
+        "mRender": function (data) {
+          return '<a class="btn btn-sm btn-primary" href="{{url('monitoring/anggota-ukm/detail')}}/'+data+'">Detail <i class="fa fa-edit"></i></a>';
+        }
+      }
+  ],
+  dom: 'Bfrtip',
+  buttons: [
+            {
+                extend: 'excel',
+                messageTop: 'Tabel Data Anggota UKM - Sistem Informasi UKM - Politeknik TEDC Bandung',
+                exportOptions: {
+                    columns: ':visible'
+                }
+            },
+            {
+                extend: 'pdf',
+                messageBottom: 'Tabel Data Anggota UKM - Sistem Informasi UKM - Politeknik TEDC Bandung',
+                exportOptions: {
+                    columns: ':visible'
+                }
+            },
+            {
+                extend: 'print',
+                messageTop: 'Tabel Data Anggota UKM - Sistem Informasi UKM - Politeknik TEDC Bandung',
+                messageBottom: null,
+                exportOptions: {
+                    columns: ':visible'
+                }
+            },
+            'colvis'
+        ]
+  } );
+
+});
+</script>
+@endif
+
 @stop

@@ -248,7 +248,7 @@
           <ul class="nav nav-tabs">
           <li class="active"><a href="#semua" data-toggle="tab">Berita</a></li>
           </ul>
-          <div class="tab-content" style="min-height:80px; max-height:580px; overflow: scroll; overflow-x: hidden;">
+          <div class="tab-content" id="berita" style="min-height:80px; max-height:580px; overflow: scroll; overflow-x: hidden;">
 
           <div class="active tab-pane" id="umum">
             @if(sizeOf($beritaU) == 0)

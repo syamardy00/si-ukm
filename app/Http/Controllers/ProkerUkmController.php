@@ -23,20 +23,42 @@ class ProkerUkmController extends Controller
      */
     public function index()
     {
-      if(Session::has('ukmDipilih')){
-        $id_user = Auth::guard('anggotaUkm')->user()->id;
-        $profil = ProfilUser::where('id_user', $id_user)->get();
-        return view('anggotaUkm.prokerUkm.index', compact('profil'));
-      }
+      if(Auth::guard('anggotaUkm')->check()){
+
+        if(Session::has('ukmDipilih')){
+          $id_user = Auth::guard('anggotaUkm')->user()->id;
+          $profil = ProfilUser::where('id_user', $id_user)->get();
+          $id_ukm = Session::get('ukmDipilih');
+          $ukm = Ukm::where('id', $id_ukm)->get();
+          return view('anggotaUkm.prokerUkm.index', compact('profil', 'ukm'));
+        }
+
+      }else if(Auth::guard('adminUkm')->check()){
+
         $id_ukm = Auth::guard('adminUkm')->user()->id_ukm;
         $ukm = Ukm::where('id', $id_ukm)->get();
         $dProker = ProkerUkm::where('id_ukm', $id_ukm)->get();
         return view('adminUkm.prokerUkm.index', compact('ukm', 'dProker'));
+
+      }else if(Auth::guard('monitoring')->check()){
+
+        if(Session::has('monitoringUkmDipilih')){
+          $user = Auth::guard('monitoring')->user();
+          $id_ukm = Session::get('monitoringUkmDipilih');
+          $ukm = Ukm::where('id', $id_ukm)->get();
+          return view('monitoring.prokerUkm.index', compact('user', 'ukm'));
+        }
+
+      }
+
+
     }
 
     public function data_proker()
     {
-      if(Session::has('ukmDipilih')){
+      if(Session::has('monitoringUkmDipilih')){
+        $id_ukm = Session::get('monitoringUkmDipilih');
+      }else if(Session::has('ukmDipilih')){
         $id_ukm = Session::get('ukmDipilih');
       }else{
         $id_ukm = Auth::guard('adminUkm')->user()->id_ukm;
@@ -57,7 +79,9 @@ class ProkerUkmController extends Controller
           if (!$this->pemilikAnggotaUkm($id)){
             return redirect()->back();
           }
-       }
+       }else if(Auth::guard('monitoring')->check()){
+
+      }
        $file = ('../public' .$id->proposal);
        $headers = ['Content-Type' => 'application/pdf', ];
        return response()->download($file, 'proposal ' .$id->nama_proker, $headers);
@@ -72,6 +96,8 @@ class ProkerUkmController extends Controller
           if (!$this->pemilikAnggotaUkm($id)){
             return redirect()->back();
           }
+       }else if(Auth::guard('monitoring')->check()){
+
        }
        $file = ('../public' .$id->laporan);
        $headers = ['Content-Type' => 'application/pdf', ];
@@ -218,6 +244,15 @@ class ProkerUkmController extends Controller
 
         return view('adminUkm.prokerUkm.show', compact('ukm', 'proker'));
 
+      }else if(Auth::guard('monitoring')->check()){
+
+        $user = Auth::guard('monitoring')->user();
+        $id_ukm = Session::get('monitoringUkmDipilih');
+        $ukm = Ukm::where('id', $id_ukm)->get();
+        $proker = ProkerUkm::where('id', $id->id)->get();
+
+        return view('monitoring.prokerUkm.show', compact('user', 'proker', 'ukm'));
+
       }else if(Auth::guard('anggotaUkm')->check()){
         if (!$this->pemilikAnggotaUkm($id)){
           return redirect()->back();
@@ -360,7 +395,9 @@ class ProkerUkmController extends Controller
 
     public function cetak_pdf(ProkerUkm $id){
 
-      if(Auth::guard('anggotaUkm')->check()){
+      if(Auth::guard('monitoring')->check()){
+        $id_ukm = Session::get('monitoringUkmDipilih');
+      }else if(Auth::guard('anggotaUkm')->check()){
         if (!$this->pemilikAnggotaUkm($id)){
           return redirect()->back();
         }else{

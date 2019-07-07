@@ -27,9 +27,7 @@ class RedirectIfAuthenticated
           return redirect(route('anggotaUkm.ukm.index'));
         }else if(Auth::guard('admin')->check()){
           return redirect(route('admin'));
-        }else if(Auth::guard('bem')->check()){
-          return redirect('/monitoring');
-        }else if(Auth::guard('bem')->check()){
+        }else if(Auth::guard('monitoring')->check()){
           return redirect('/monitoring');
         }
 

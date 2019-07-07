@@ -8,7 +8,7 @@
     @include('layout.header')
     @include('layout.sidebar')
 
-      <div class="content-wrapper">
+      <div class="content-wrapper" id="scroll">
         @yield('content')
       </div>
 
@@ -18,5 +18,8 @@
     <div class="control-sidebar-bg"></div>
   </div>
   @include('layout.script')
+  @section('js')
+
+  @stop
 </body>
 </html>

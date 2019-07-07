@@ -30,6 +30,13 @@ class CalonAnggotaController extends Controller
           return view('anggotaUkm.calonAnggota.index', compact('profil', 'ukm'));
         }
 
+        if(Session::has('monitoringUkmDipilih')){
+          $user = Auth::guard('monitoring')->user();
+          $id_ukm = Session::get('monitoringUkmDipilih');
+          $ukm = Ukm::where('id', $id_ukm)->get();
+          return view('monitoring.calonAnggota.index', compact('user', 'ukm'));
+        }
+
         $id_ukm = Auth::guard('adminUkm')->user()->id_ukm;
         $ukm = Ukm::where('id', $id_ukm)->get();
         // $calonAnggota = CalonAnggota::where('id_ukm', $id_ukm)->get();
@@ -47,7 +54,9 @@ class CalonAnggotaController extends Controller
 
     public function data_calonAnggota()
     {
-        if(Session::has('ukmDipilih')){
+        if(Session::has('monitoringUkmDipilih')){
+          $id_ukm = Session::get('monitoringUkmDipilih');
+        }else if(Session::has('ukmDipilih')){
           $id_ukm = Session::get('ukmDipilih');
         }else{
           $id_ukm = Auth::guard('adminUkm')->user()->id_ukm;
@@ -109,6 +118,9 @@ class CalonAnggotaController extends Controller
         $id_ukm = Session::get('ukmDipilih');
         $id_user = Auth::guard('anggotaUkm')->user()->id;
         $profil = ProfilUser::where('id_user', $id_user)->get();
+      }else if(Auth::guard('monitoring')->check()){
+        $id_ukm = Session::get('monitoringUkmDipilih');
+        $user = Auth::guard('monitoring')->user();
       }
 
         $ukm = Ukm::where('id', $id_ukm)->get();
@@ -126,6 +138,8 @@ class CalonAnggotaController extends Controller
           return view('adminUkm.calonAnggota.show', compact('ukm', 'calonAnggota'));
         }else if(Auth::guard('anggotaUkm')->check()){
           return view('anggotaUkm.calonAnggota.show', compact('ukm', 'calonAnggota', 'profil'));
+        }else if(Auth::guard('monitoring')->check()){
+          return view('monitoring.calonAnggota.show', compact('ukm', 'calonAnggota', 'user'));
         }
 
       }
@@ -166,8 +180,9 @@ class CalonAnggotaController extends Controller
     }
 
     public function cetak_pdf(CalonAnggota $id){
-
-      if(Auth::guard('anggotaUkm')->check()){
+      if(Auth::guard('monitoring')->check()){
+          $id_ukm = Session::get('monitoringUkmDipilih');
+      }else if(Auth::guard('anggotaUkm')->check()){
         if (!$this->pemilikAnggotaUkm($id)){
           return redirect()->back();
         }else{

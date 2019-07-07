@@ -73,8 +73,71 @@
 <script src="{{url('/assets/bower_components/datatables.net/js/buttons.html5.min.js')}}"></script>
 <script src="{{url('/assets/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js')}}"></script>
 
-<script>
+@if(Auth::guard('anggotaUkm')->check())
+  <script>
+  $(document).ready(function() {
+      var printCounter = 0;
 
+    $('#data_calon_anggota').append('<caption style="caption-side: bottom">Sistem Informasi UKM Politeknik TEDC Bandung.</caption>');
+
+    $('#data_calon_anggota').DataTable( {
+    aaSorting : [[5, "desc"]],
+    processing: true,
+    ajax: {
+        url: "{{route('anggotaUkm.calonAnggota.data_calon_anggota')}}",
+        dataSrc: ""
+    },
+    columns: [
+        { "data": "nim" },
+        { "data": "nama" },
+        { "data": "nama_jurusan" },
+        { "data": "tahun_angkatan",
+          "searchable" : false
+        },
+        { "data": "tgl_pendaftaran" },
+        { "data": "no_telepon"},
+        { "data": "id",
+          "width": "75px",
+          "sClass": "text-center",
+          "orderable": false,
+          "mRender": function (data) {
+            return '<a class="btn btn-sm btn-primary" href="{{url('ukm/dashboard/calon-anggota/detail')}}/'+data+'">Detail <i class="fa fa-info"></i></a>';
+          }
+        }
+    ],
+    dom: 'Bfrtip',
+    buttons: [
+              {
+                  extend: 'excel',
+                  messageTop: 'Tabel Data Calon Anggota UKM - Sistem Informasi UKM - Politeknik TEDC Bandung',
+                  exportOptions: {
+                      columns: ':visible'
+                  }
+              },
+              {
+                  extend: 'pdf',
+                  messageBottom: 'Tabel Data Calon Anggota UKM - Sistem Informasi UKM - Politeknik TEDC Bandung',
+                  exportOptions: {
+                      columns: ':visible'
+                  }
+              },
+              {
+                  extend: 'print',
+                  messageTop: 'Tabel Data Calon Anggota UKM - Sistem Informasi UKM - Politeknik TEDC Bandung',
+                  messageBottom: null,
+                  exportOptions: {
+                      columns: ':visible'
+                  }
+              },
+              'colvis'
+          ]
+    } );
+
+  });
+  </script>
+
+@elseif(Auth::guard('monitoring'))
+<script>
 $(document).ready(function() {
     var printCounter = 0;
 
@@ -84,7 +147,7 @@ $(document).ready(function() {
   aaSorting : [[5, "desc"]],
   processing: true,
   ajax: {
-      url: "{{route('anggotaUkm.calonAnggota.data_calon_anggota')}}",
+      url: "{{route('monitoring.calonAnggota.data_calon_anggota')}}",
       dataSrc: ""
   },
   columns: [
@@ -101,7 +164,7 @@ $(document).ready(function() {
         "sClass": "text-center",
         "orderable": false,
         "mRender": function (data) {
-          return '<a class="btn btn-sm btn-primary" href="{{url('ukm/dashboard/calon-anggota/detail')}}/'+data+'">Detail <i class="fa fa-info"></i></a>';
+          return '<a class="btn btn-sm btn-primary" href="{{url('monitoring/calon-anggota/detail')}}/'+data+'">Detail <i class="fa fa-info"></i></a>';
         }
       }
   ],
@@ -134,7 +197,7 @@ $(document).ready(function() {
   } );
 
 });
-
-
 </script>
+
+@endif
 @stop

@@ -76,25 +76,16 @@ return [
             'provider' => 'admin',
         ],
 
-        'bem' => [
+        'monitoring' => [
             'driver' => 'session',
             'provider' => 'bem',
         ],
 
-        'apiBem' => [
+        'apiMonitoring' => [
             'driver' => 'token',
-            'provider' => 'bem',
+            'provider' => 'monitoring',
         ],
 
-        'wd1' => [
-            'driver' => 'session',
-            'provider' => 'wd1',
-        ],
-
-        'apiWd1' => [
-            'driver' => 'token',
-            'provider' => 'wd1',
-        ],
     ],
 
     /*

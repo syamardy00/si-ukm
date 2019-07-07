@@ -49,7 +49,7 @@ class ProfilUkmController extends Controller
 
 
     // ADMIN UKM ===========================================================================================================================================
-    public function indexAdminUkm(Request $request){ //adminUKM dan anggotaUKMa(DASHBOARD)
+    public function indexAdminUkm(Request $request){ //adminUKM dan anggotaUKMa(DASHBOARD) dan Monitoring
       // dd($request);
       if(Auth::guard('anggotaUkm')->check()){
         if($request->id_ukm){
@@ -62,8 +62,20 @@ class ProfilUkmController extends Controller
         $id_ukm = Session::get('ukmDipilih');
         $id = Auth::guard('anggotaUkm')->user()->id;
         $profil = ProfilUser::where('id_user', $id)->get();
+
       }else if(Auth::guard('adminUkm')->check()){
         $id_ukm = Auth::guard('adminUkm')->user()->id_ukm;
+
+      }else if(Auth::guard('monitoring')->check()){
+        if($request->id_ukm){
+          if(Session::has('monitoringUkmDipilih')){
+            Session::forget('monitoringUkmDipilih');
+          }
+          $id_ukm = request('id_ukm');
+          Session::put('monitoringUkmDipilih', $id_ukm);
+        }
+        $id_ukm = Session::get('monitoringUkmDipilih');
+        $user = Auth::guard('monitoring')->user();
       }
 
       $jAnggota = AnggotaUkm::where('id_ukm', $id_ukm)->where('status', '=', 'Aktif')->count();
@@ -82,6 +94,8 @@ class ProfilUkmController extends Controller
         return view('adminUkm.profilUkm.index', compact('ukm', 'berita', 'beritaU', 'beritaI', 'foto', 'jAnggota', 'jProker', 'jCalonAnggota'));
       }else if(Auth::guard('anggotaUkm')->check()){
         return view('anggotaUkm.ukm.dashboard', compact('ukm', 'berita', 'beritaU', 'beritaI', 'foto', 'profil', 'jAnggota', 'jProker', 'jCalonAnggota'));
+      }else if(Auth::guard('monitoring')->check()){
+        return view('monitoring.profilUkm.index', compact('ukm', 'berita', 'beritaU', 'foto', 'user', 'jAnggota', 'jProker', 'jCalonAnggota'));
       }
     }
 
@@ -216,20 +230,25 @@ class ProfilUkmController extends Controller
 
     // ANGGOTA UKM ===========================================================================================================================================
 
-    public function profilUkm($id){
-      if(Session::has('ukmDipilih')){
-        Session::forget('ukmDipilih');
-      }
+    public function profilUkm(Request $request, $id){
+      if(Auth::guard('anggotaUkm')->check()){
+        if(Session::has('ukmDipilih')){
+          Session::forget('ukmDipilih');
+        }
+        $id_user = Auth::guard('anggotaUkm')->user()->id;
+        $profil = ProfilUser::where('id_user', $id_user)->get();
 
-      $id_user = Auth::guard('anggotaUkm')->user()->id;
-      $profil = ProfilUser::where('id_user', $id_user)->get();
+      }
 
       $ukm = Ukm::where('id', $id)->get();
       $berita = BeritaUkm::where('id_ukm', $id)->limit(10)->get();
       $beritaU = BeritaUkm::where('id_ukm', $id)->where('sifat_berita', 'umum')->limit(10)->get();
       $foto = GaleriFoto::where('id_ukm', $id)->orderBy('id', 'DESC')->get();
       // return $dataUkm;
-      return view('anggotaUkm.ukm.profilUkm', compact('ukm', 'berita', 'beritaU', 'foto', 'profil'));
+
+      if(Auth::guard('anggotaUkm')->check()){
+        return view('anggotaUkm.ukm.profilUkm', compact('ukm', 'berita', 'beritaU', 'foto', 'profil'));
+      }
 
     }
 }

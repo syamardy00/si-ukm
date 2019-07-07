@@ -130,6 +130,77 @@
     </div>
   </div>
 
+@if(Auth::guard('monitoring')->check())
+
+  <div class="row">
+
+    <div class="col-lg-3 col-xs-6">
+      <div class="small-box bg-aqua">
+        <div class="inner">
+          <h3>{{$jAnggota}} Orang</h3>
+          <span>Anggota Aktif UKM</span>
+        </div>
+        <div class="icon">
+          <i class="fa fa-user"></i>
+        </div>
+        <a href="{{route('monitoring.anggotaUkm.index')}}" class="small-box-footer">Selengkapnya <i class="fa fa-arrow-circle-right"></i></a>
+      </div>
+    </div>
+
+    <div class="col-lg-3 col-xs-6">
+      <div class="small-box bg-yellow">
+        <div class="inner">
+          <h3>{{$jProker}} Proker</h3>
+          <span>Belum Terlaksana</span>
+        </div>
+        <div class="icon">
+          <i class="fa fa-calendar"></i>
+        </div>
+        <a href="{{route('monitoring.prokerUkm.index')}}" class="small-box-footer">Selengkapnya <i class="fa fa-arrow-circle-right"></i></a>
+      </div>
+    </div>
+
+    <div class="col-lg-3 col-xs-6">
+      <div class="small-box bg-green">
+        <div class="inner">
+          <h3>{{$jCalonAnggota}} Orang</h3>
+          <span>Calon Anggota Baru Tahun Ini</span>
+        </div>
+        <div class="icon">
+          <i class="fa fa-child"></i>
+        </div>
+        <a href="{{route('monitoring.calonAnggota.index')}}" class="small-box-footer">Selengkapnya <i class="fa fa-arrow-circle-right"></i></a>
+      </div>
+    </div>
+
+    <div class="col-lg-3 col-xs-6">
+      <div class="small-box bg-red">
+        @if($ukm[0]['pendaftaran'] == 0)
+          <div class="inner">
+              <h3>Non Aktif</h3>
+              <span>Form Pendaftaran Calon Anggota</span>
+          </div>
+          <div class="icon">
+            <i class="fa fa-ban"></i>
+          </div>
+          <a href="#"class="small-box-footer">&nbsp </a>
+        @else
+          <div class="inner">
+              <h3>Aktif</h3>
+              <span>Form Pendaftaran Calon Anggota</span>
+          </div>
+          <div class="icon">
+            <i class="fa fa-check"></i>
+          </div>
+          <a href="#" class="small-box-footer">&nbsp </a>
+        @endif
+      </div>
+    </div>
+
+  </div>
+
+@endif
+
   <div class="row">
 
     <!-- kolom kiri -->
@@ -214,7 +285,11 @@
             </div>
             @if(sizeOf($foto) > 0)
             <hr>
-            <center><h5><a href="{{route('public.galeriFoto.index', $ukm[0]->id)}}"><b>Selengkapnya</b></a></h5></center>
+              @if(Auth::guard('monitoring')->check())
+                <center><h5><a href="{{route('monitoring.galeriFoto.index')}}"><b>Selengkapnya</b></a></h5></center>
+              @else
+                <center><h5><a href="{{route('public.galeriFoto.index', $ukm[0]->id)}}"><b>Selengkapnya</b></a></h5></center>
+              @endif
             @endif
           </div>
           <!-- /.box-body -->
@@ -254,7 +329,7 @@
           <ul class="nav nav-tabs">
           <li class="active"><a href="#semua" data-toggle="tab">Berita</a></li>
           </ul>
-          <div class="tab-content" style="min-height:80px; max-height:580px; overflow: scroll; overflow-x: hidden;">
+          <div class="tab-content" id="berita" style="min-height:80px; max-height:580px; overflow: scroll; overflow-x: hidden;">
 
           <div class="active tab-pane" id="umum">
             @if(sizeOf($beritaU) == 0)
@@ -288,7 +363,12 @@
           </div>
           @if(sizeOf($berita) > 0)
           <hr>
-          <center><h5><a href="{{route('public.beritaUkm.index', $ukm[0]['id'])}}"><b>Selengkapnya</b></a></h5></center>
+          @if(Auth::guard('monitoring')->check())
+            <center><h5><a href="{{route('monitoring.beritaUkm.index')}}"><b>Selengkapnya</b></a></h5></center>
+          @else
+            <center><h5><a href="{{route('public.beritaUkm.index', $ukm[0]['id'])}}"><b>Selengkapnya</b></a></h5></center>
+          @endif
+
           @endif
           </div>
           <!-- /.tab-content -->

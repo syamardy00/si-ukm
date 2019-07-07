@@ -30,10 +30,27 @@
 <script src="{{url('/assets/bower_components/fastclick/lib/fastclick.js')}}"></script>
 <!-- AdminLTE App -->
 <script src="{{url('/assets/dist/js/adminlte.min.js')}}"></script>
+
+<script src="{{url('/assets/nicescroll/jquery.nicescroll.min.js')}}"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <!-- <script src="{{url('/assets/dist/js/pages/dashboard.js')}}"></script> -->
 <!-- AdminLTE for demo purposes -->
 <!-- <script src="{{url('/assets/dist/js/demo.js')}}"></script> -->
+<script>
+  $(document).ready(function() {
+  var nice = $("html").niceScroll({cursorcolor:"#3C8DBC", cursorwidth: '7.5px', autohidemode: true});  // The document page (body)
+  $("#main-sidebar").niceScroll({cursorcolor:"#3C8DBC", cursorwidth: '7.5px', autohidemode: true});  // The document page (body)
+  $("#berita").niceScroll({cursorcolor:"#3C8DBC", cursorwidth: '7.5px', autohidemode: true});  // The document page (body)
+  });
+</script>
+
+<script>
+    $(document).ready(function(){
+      $(".preloader").fadeOut();
+    })
+    </script>
+  </head>
+</script>
 
 @section('js')
 

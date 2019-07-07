@@ -118,8 +118,8 @@
     <div class="col-lg-4 col-xs-6">
       <div class="small-box bg-aqua">
         <div class="inner">
-          <h3>{{$jAnggota}}</h3>
-          <span>Anggota Aktif</span>
+          <h3>{{$jAnggota}} Orang</h3>
+          <span>Anggota Aktif UKM</span>
         </div>
         <div class="icon">
           <i class="fa fa-user"></i>
@@ -131,8 +131,8 @@
     <div class="col-lg-4 col-xs-6">
       <div class="small-box bg-yellow">
         <div class="inner">
-          <h3>{{$jProker}}</h3>
-          <span>Proker Belum Terlaksana</span>
+          <h3>{{$jProker}} Proker</h3>
+          <span>Belum Terlaksana</span>
         </div>
         <div class="icon">
           <i class="fa fa-calendar"></i>
@@ -144,7 +144,7 @@
     <div class="col-lg-4 col-xs-6">
       <div class="small-box bg-green">
         <div class="inner">
-          <h3>{{$jCalonAnggota}}</h3>
+          <h3>{{$jCalonAnggota}} Orang</h3>
           <span>Calon Anggota Baru Tahun Ini</span>
         </div>
         <div class="icon">
@@ -274,7 +274,7 @@
           <li><a href="#internal" data-toggle="tab">Berita Internal</a></li>
           <li><a href="#umum" data-toggle="tab">Berita Umum</a></li>
           </ul>
-          <div class="tab-content" style="min-height:80px; max-height:580px; overflow: scroll; overflow-x: hidden;">
+          <div class="tab-content" id="berita" style="min-height:80px; max-height:580px; overflow: scroll; overflow-x: hidden;">
 
           <div class="active tab-pane" id="semua">
             @if(sizeOf($berita) == 0)

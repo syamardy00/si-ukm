@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Ukm;
 use App\ProfilUser;
-use App\anggotaUkm;
+use App\AnggotaUkm;
+use App\CalonAnggota;
 use Auth;
 use Illuminate\Http\Request;
 use App\User;
@@ -27,9 +28,18 @@ class UkmController extends Controller
       // $id = Auth::guard('adminUkm')->user()->id;
       //
       // $profil = ProfilUser::where('id_user', $id)->get();
-      $ukm = Ukm::All();
-
-      return view('admin.ukm.index', compact('profil', 'ukm'));
+      $ukm = Ukm::orderBy('nama_ukm', 'ASC')->get();
+      if(Auth::guard('monitoring')->check()){
+        if(Session::has('monitoringUkmDipilih')){
+          Session::forget('monitoringUkmDipilih');
+        }
+        $user = Auth::guard('monitoring')->user();
+        $anggota = AnggotaUkm::groupby('id_user')->distinct()->get();
+        $calonAnggota = CalonAnggota::groupby('nim')->distinct()->get();
+          return view('monitoring.ukm.index', compact('ukm', 'user', 'anggota', 'calonAnggota'));
+      }else if(Auth::guard('admin')->check()){
+        return view('admin.ukm.index', compact('ukm'));
+      }
     }
 
     /**
