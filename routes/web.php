@@ -11,9 +11,9 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 Route::get('/adminlte', function () {
   return view('adminlte.index');
@@ -31,8 +31,16 @@ Route::get('/logout', 'LoginController@logout')->name('logout');
 
 Route::group(['middleware' => 'guest'], function(){
 
-  Route::get('/login', 'LoginController@index');
+  Route::get('/', 'UkmController@index');
+  Route::get('/home', 'UkmController@index')->name('home');
   Route::post('/login/do-login', 'LoginController@login')->name('login');
+
+  Route::get('/home/profil-ukm/{id}', 'ProfilUkmController@profilUkm')->name('guest.profilUkm.index');
+  Route::get('/home/berita-ukm/{id}', 'BeritaUkmController@semuaBerita')->name('guest.beritaUkm.index');
+  Route::get('/home/berita-ukm/baca/{id}', 'BeritaUkmController@show')->name('guest.beritaUkm.show');
+  Route::get('/home/geleri-foto/{id}', 'GaleriFotoController@index')->name('guest.galeriFoto.index');
+  Route::get('/home/pendaftaran/{id}', 'CalonAnggotaController@create')->name('guest.pendaftaran.create');
+  Route::post('/home/pendaftaran/simpan', 'CalonAnggotaController@store')->name('guest.pendaftaran.store');
 
 });
 
@@ -200,11 +208,12 @@ Route::group(['middleware' => ['auth:monitoring']], function(){
 
 });
 
-
-Route::get('public/berita/baca/cetak-pdf/{id}', 'BeritaUkmController@cetak_pdf')->name('public.beritaUkm.cetak_pdf');
-Route::get('public/anggota-ukm/cetak-pdf/{id}', 'AnggotaUkmController@cetak_pdf')->name('public.anggotaUkm.cetak_pdf');
-Route::get('public/proker-ukm/detail/cetak-pdf/{id}', 'ProkerUkmController@cetak_pdf')->name('public.prokerUkm.cetak_pdf');
-Route::get('public/calon-anggota/detail/cetak-pdf/{id}', 'CalonAnggotaController@cetak_pdf')->name('public.calonAnggota.cetak_pdf');
+Route::group(['middleware' => ['auth:monitoring', 'auth:anggotaUkm']], function(){
+  Route::get('public/berita/baca/cetak-pdf/{id}', 'BeritaUkmController@cetak_pdf')->name('public.beritaUkm.cetak_pdf');
+  Route::get('public/anggota-ukm/cetak-pdf/{id}', 'AnggotaUkmController@cetak_pdf')->name('public.anggotaUkm.cetak_pdf');
+  Route::get('public/proker-ukm/detail/cetak-pdf/{id}', 'ProkerUkmController@cetak_pdf')->name('public.prokerUkm.cetak_pdf');
+  Route::get('public/calon-anggota/detail/cetak-pdf/{id}', 'CalonAnggotaController@cetak_pdf')->name('public.calonAnggota.cetak_pdf');
+});
 
 
 

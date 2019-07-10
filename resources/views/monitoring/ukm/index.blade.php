@@ -105,28 +105,31 @@
           </blockquote>
           @foreach($ukm as $u)
           <div class="col-md-4">
-            <div class="box box-widget widget-user shadow" style=" border-bottom:4px solid #00C0EF;">
-              <!-- Add the bg color to the header using any of the bg-* classes -->
-              <div class="widget-user-header" style="background:#222D32; color:white; padding-left: 0px;">
-                <p class="widget-user-username col-md-8" style="font-size: 12pt;">{{$u->nama_ukm}}</p>
-                <div class="" style="bottom:5px; margin-bottom:5px; position: absolute; margin-left: 15px;">
-                  <form method="POST" action="{{route('monitoring.profilUkm.index')}}">
-                    {{ csrf_field() }}
-                    {{ method_field('POST') }}
-                    <input type="hidden" name="id_ukm" value="{{$u->id}}">
-                    <button type="submit" href="" class="btn btn-sm btn-primary col-md-12">
-                      Info UKM <i class="fa fa-arrow-circle-right"></i>
-                    </button>
-                  </form>
-                </div>
-              </div>
-              <div class="widget-user-image" style="margin-top: -55px; text-align: right; right:20px;">
+            <div class="small-box shadow" style="background:#3A3F4B; color:#fff;">
+              <div class="inner">
                 @if($u->logo_ukm)
-                  <img class="img-square" src="{{url($u->logo_ukm)}}" alt="User Avatar" style="width: 100px; height: 100px;">
+                  <div class="widget-user-image img-rounded" style="text-align: right; right:20px; text-align:center; height:150px; width:100%;
+                  background:url({{url($u->logo_ukm)}}); background-size:cover; background-position:center; margin-bottom:5px;">
+                  </div>
                 @else
-                <img class="img-square" src="{{url('/foto/default-image.png')}}" alt="User Avatar" style="width: 100px; height: 100px;">
+                  <div class="widget-user-image img-rounded" style="text-align: right; right:20px; text-align:center; height:150px; width:100%;
+                  background:url({{url('/foto/default-image.png')}}); background-size:cover; background-position:center; margin-bottom:5px;">
+                  </div>
                 @endif
+
+                <font style="font-size:11pt; font-weight:bold;"><center>{{substr($u->nama_ukm, 0, 33)}}</center></font>
               </div>
+              <!-- <div class="icon">
+                <i class="fa fa-user"></i>
+              </div> -->
+              <form method="POST" action="{{route('monitoring.profilUkm.index')}}">
+                {{ csrf_field() }}
+                {{ method_field('POST') }}
+                <input type="hidden" name="id_ukm" value="{{$u->id}}">
+                <div class="small-box-footer" style="text-align:center; padding:3px; background:#313640;">
+                  <a><button type="submit" class="btn btn-xs btn-flat" style="width:100%; background:#3A3F4B; color:#fff;">Selengkapnya <i class="fa fa-arrow-circle-right"></i></button></a>
+                </div>
+              </form>
             </div>
           </div>
           @endforeach

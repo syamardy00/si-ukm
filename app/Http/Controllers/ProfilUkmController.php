@@ -33,7 +33,7 @@ class ProfilUkmController extends Controller
       $beritaU = BeritaUkm::where('id_ukm', $id_ukm)->where('sifat_berita', 'umum')->limit(10)->get();
       $foto = GaleriFoto::where('id_ukm', $id_ukm)->orderBy('id', 'DESC')->get();
       // return $dataUkm;
-      return view('admin.profilUkm.index', compact('ukm', 'berita', 'beritaU', 'beritaI', 'foto'));
+      return view('admin.profilUkm.index', compact('ukm', 'berita', 'beritaU', 'foto'));
     }
 
 
@@ -49,7 +49,7 @@ class ProfilUkmController extends Controller
 
 
     // ADMIN UKM ===========================================================================================================================================
-    public function indexAdminUkm(Request $request){ //adminUKM dan anggotaUKMa(DASHBOARD) dan Monitoring
+    public function indexAdminUkm(Request $request){ //adminUKM dan anggotaUKMa(DASHBOARD) dan Monitoring berdasarkan request
       // dd($request);
       if(Auth::guard('anggotaUkm')->check()){
         if($request->id_ukm){
@@ -230,14 +230,13 @@ class ProfilUkmController extends Controller
 
     // ANGGOTA UKM ===========================================================================================================================================
 
-    public function profilUkm(Request $request, $id){
+    public function profilUkm($id){  //anggotaUkm dan guest GET dari link
       if(Auth::guard('anggotaUkm')->check()){
         if(Session::has('ukmDipilih')){
           Session::forget('ukmDipilih');
         }
         $id_user = Auth::guard('anggotaUkm')->user()->id;
         $profil = ProfilUser::where('id_user', $id_user)->get();
-
       }
 
       $ukm = Ukm::where('id', $id)->get();
@@ -248,6 +247,8 @@ class ProfilUkmController extends Controller
 
       if(Auth::guard('anggotaUkm')->check()){
         return view('anggotaUkm.ukm.profilUkm', compact('ukm', 'berita', 'beritaU', 'foto', 'profil'));
+      }else{
+        return view('public.home.profilUkm', compact('ukm', 'berita', 'beritaU', 'foto'));
       }
 
     }

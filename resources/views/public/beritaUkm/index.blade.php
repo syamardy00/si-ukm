@@ -10,6 +10,8 @@
       <li><a href="{{route('anggotaUkm.ukm.dashboardProfilUkm')}}"><i class="fa fa-dashboard"></i>Dashboard</a></li>
     @elseif(Auth::guard('monitoring')->check())
       <li><a href="#"><i class="fa fa-tv"></i>Monitoring</a></li>
+    @else
+      <li><a href="{{route('home')}}"><i class="fa fa-home"></i>Home</a></li>
     @endif
     <li class="active">Berita</li>
   </ol>
@@ -36,8 +38,10 @@
                   <span class="username" style="margin-left: 0px;">
                   @if(Auth::guard('monitoring')->check())
                     <a href="{{url('/monitoring/berita-ukm/baca/'.$b->id)}}">{{$b->judul_berita}}</a>
-                  @else
+                  @elseif(Auth::guard('anggotaUkm')->check())
                     <a href="{{url('/ukm/profil-ukm/berita/baca/'.$b->id)}}">{{$b->judul_berita}}</a>
+                  @else
+                    <a href="{{url('/home/berita-ukm/baca/'.$b->id)}}">{{$b->judul_berita}}</a>
                   @endif
                   </span>
                   <span class="description" style="margin-left: 0px;">
@@ -54,15 +58,18 @@
                 @if(Auth::guard('monitoring')->check())
                   <a href="{{url('/monitoring/berita-ukm/baca/'.$b->id)}}" class="link-black text-sm"><i class="fa fa-eye margin-r-5"></i> Baca Berita
                   </a></li>
-                @else
+                @elseif(Auth::guard('anggotaUkm')->check())
                   <a href="{{url('/ukm/profil-ukm/berita/baca/'.$b->id)}}" class="link-black text-sm"><i class="fa fa-eye margin-r-5"></i> Baca Berita
+                  </a></li>
+                @else
+                  <a href="{{url('/home/berita-ukm/baca/'.$b->id)}}" class="link-black text-sm"><i class="fa fa-eye margin-r-5"></i> Baca Berita
                   </a></li>
                 @endif
                 </ul>
                 <br>
               </div>
               @endforeach
-
+              {{ $beritaU->links() }}
             </div>
             </div>
             <!-- /.tab-content -->

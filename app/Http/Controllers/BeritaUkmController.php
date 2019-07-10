@@ -127,6 +127,10 @@ class BeritaUkmController extends Controller
           $berita = BeritaUkm::where('id', $id->id)->where('sifat_berita', 'umum')->get();
           $ukm = UKM::where('id', $berita[0]['id_ukm'])->get();
           return view('monitoring.beritaUkm.show', compact('berita', 'ukm', 'user'));
+      }else{
+          $berita = BeritaUkm::where('id', $id->id)->where('sifat_berita', 'umum')->get();
+          $ukm = UKM::where('id', $berita[0]['id_ukm'])->get();
+          return view('public.home.bacaBeritaUkm', compact('berita', 'ukm'));
       }
     }
 
@@ -243,13 +247,15 @@ class BeritaUkmController extends Controller
           $id_ukm = $id->id;
         }
         $user = Auth::guard('monitoring')->user();
+      }else{
+        $id_ukm = $id->id;
       }
 
 
       $ukm = Ukm::where('id', $id_ukm)->get();
-      $berita = BeritaUkm::where('id_ukm', $id_ukm)->limit(10)->get();
-      $beritaU = BeritaUkm::where('id_ukm', $id_ukm)->where('sifat_berita', 'umum')->limit(10)->get();
-      $beritaI = BeritaUkm::where('id_ukm', $id_ukm)->where('sifat_berita', 'internal')->limit(10)->get();
+      $berita = BeritaUkm::where('id_ukm', $id_ukm)->paginate(5);
+      $beritaU = BeritaUkm::where('id_ukm', $id_ukm)->where('sifat_berita', 'umum')->paginate(5);
+      $beritaI = BeritaUkm::where('id_ukm', $id_ukm)->where('sifat_berita', 'internal')->paginate(5);
 
 
       if(Auth::guard('anggotaUkm')->check()){
@@ -262,6 +268,8 @@ class BeritaUkmController extends Controller
         return view('adminUkm.beritaUkm.semuaBerita', compact('ukm', 'berita', 'beritaU', 'beritaI'));
       }else if(Auth::guard('monitoring')->check()){
         return view('monitoring.beritaUkm.index', compact('ukm', 'berita', 'beritaU', 'profil', 'user'));
+      }else{
+        return view('public.home.beritaUkm', compact('ukm', 'berita', 'beritaU'));
       }
     }
 

@@ -10,6 +10,7 @@ use Auth;
 use Illuminate\Http\Request;
 use App\User;
 use DB;
+use Carbon\Carbon;
 use Session;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
@@ -29,17 +30,23 @@ class UkmController extends Controller
       //
       // $profil = ProfilUser::where('id_user', $id)->get();
       $ukm = Ukm::orderBy('nama_ukm', 'ASC')->get();
+      $tahun = Carbon::now()->format('Y');
+
       if(Auth::guard('monitoring')->check()){
         if(Session::has('monitoringUkmDipilih')){
           Session::forget('monitoringUkmDipilih');
         }
         $user = Auth::guard('monitoring')->user();
         $anggota = AnggotaUkm::groupby('id_user')->distinct()->get();
-        $calonAnggota = CalonAnggota::groupby('nim')->distinct()->get();
+        $calonAnggota = CalonAnggota::whereYear('tgl_pendaftaran', $tahun)->groupby('nim')->distinct()->get();
           return view('monitoring.ukm.index', compact('ukm', 'user', 'anggota', 'calonAnggota'));
+
       }else if(Auth::guard('admin')->check()){
         return view('admin.ukm.index', compact('ukm'));
+      }else{
+        return view('public.home.index', compact('ukm'));
       }
+
     }
 
     /**

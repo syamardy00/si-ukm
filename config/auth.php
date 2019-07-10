@@ -78,7 +78,7 @@ return [
 
         'monitoring' => [
             'driver' => 'session',
-            'provider' => 'bem',
+            'provider' => 'monitoring',
         ],
 
         'apiMonitoring' => [
@@ -122,11 +122,7 @@ return [
             'driver' => 'eloquent',
             'model' => App\Login::class,
         ],
-        'bem' => [
-            'driver' => 'eloquent',
-            'model' => App\Login::class,
-        ],
-        'wd1' => [
+        'monitoring' => [
             'driver' => 'eloquent',
             'model' => App\Login::class,
         ],

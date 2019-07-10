@@ -26,7 +26,7 @@ class LoginController extends Controller //implements Authenticatable
         Session::forget('monitoringUkmDipilih');
       }
 
-      return view('login');
+      return view('/home');
     }
       // use AuthenticableTrait;
 
@@ -61,10 +61,12 @@ class LoginController extends Controller //implements Authenticatable
           }
 
         }else{ //jika gagal login
-          return "Login Gagal, Password salah";
+          return redirect()->to('/home')->with('error', 'Password yang anda masukan salah.');
+          // return "Login Gagal, Password salah";
         }
       }else{
-        return "Login Gagal, Username tidak terdaftar";
+        return redirect()->to('/home')->with('error', 'Username yang anda masukan tidak terdaftar.');
+        //return "Login Gagal, Username tidak terdaftar";
       }
     }
 
@@ -88,7 +90,7 @@ class LoginController extends Controller //implements Authenticatable
         Session::forget('monitoringUkmDipilih');
       }
 
-      return redirect('/login');
+      return redirect('/home');
 
     }
 }

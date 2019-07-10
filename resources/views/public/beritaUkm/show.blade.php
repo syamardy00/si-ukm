@@ -12,6 +12,8 @@
       <li><a href="{{route('anggotaUkm.ukm.dashboardProfilUkm')}}"><i class="fa fa-dashboard"></i>Dashboard</a></li>
     @elseif(Auth::guard('monitoring')->check())
       <li><a href="#"><i class="fa fa-tv"></i>Monitoring</a></li>
+    @else
+      <li><a href="{{route('home')}}"><i class="fa fa-home"></i>Home</a></li>
     @endif
     <li><a href="#"></a>Berita</li>
     <li class="active">Baca Berita</li>
@@ -25,7 +27,11 @@
           <div class="box box-primary">
             <div class="box-header with-border">
               <h3 class="box-title">Baca Berita</h3>
-              <a href="{{route('public.beritaUkm.cetak_pdf', $berita[0]['id'])}}" class="btn btn-xs btn-primary pull-right">Simpan PDF &nbsp; <i class="fa fa-file-pdf-o"></i></a>
+              @if(!Auth::guard('')->check())
+
+              @else
+                <a href="{{route('public.beritaUkm.cetak_pdf', $berita[0]['id'])}}" class="btn btn-xs btn-primary pull-right">Simpan PDF &nbsp; <i class="fa fa-file-pdf-o"></i></a>
+              @endif
             </div>
             <!-- /.box-header -->
             <!-- form start -->

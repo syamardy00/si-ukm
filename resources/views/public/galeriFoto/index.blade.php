@@ -1,10 +1,16 @@
-
 @section('content')
 
 <link href="{{url('/assets/galeri/css/style.css')}}" rel="stylesheet"/>
 
 <!-- CSS Lightbox -->
 <link href="{{url('/assets/galeri/css/lightbox.css')}}" rel="stylesheet"/>
+
+<style>
+.shadow:hover{
+  box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.75);
+  transition: ease-in-out 1;
+}
+</style>
 
   <section class="content-header">
   <h1>
@@ -16,6 +22,8 @@
       <li><a href="{{route('anggotaUkm.ukm.dashboardProfilUkm')}}"><i class="fa fa-dashboard"></i>Dashboard</a></li>
     @elseif(Auth::guard('monitoring')->check())
       <li><a href="#"><i class="fa fa-tv"></i>Monitoring</a></li>
+    @else
+      <li><a href="{{route('home')}}"><i class="fa fa-home"></i>Home</a></li>
     @endif
     <li class="active">Galeri Foto</li>
   </ol>
@@ -72,15 +80,17 @@
             @endif
             <div class="col-md-4" style="margin-bottom:30px;">
               <div style="">
-                <div class="well" style="margin:0px;">
+                <div class="well shadow" style="margin:0px; height:320px; background:#3A3F4B; color:#fff; border:0px;">
                     <a class="example-image-link" href="{{$f->foto}}" data-lightbox="example-set" data-title="{{$f->keterangan}}">
-                      <img class="thumbnail img-responsive" alt="Bootstrap template" src="{{$f->foto}}" />
+                      <div class="widget-user-image img-rounded" style="text-align: right; right:20px; text-align:center; height:200px; width:100%;
+                      background:url({{url($f->foto)}}); background-size:cover; background-position:center;">
+                      </div>
+                      <!-- <img class="thumbnail img-responsive" alt="Bootstrap template" src="{{$f->foto}}" /> -->
                     </a>
-                    <hr>
-                    <p>{{substr($f->keterangan, 0, 125)}}</p>
-                    @if(Auth::guard('adminUkm')->check())
-                    <a class="btn btn-xs btn-danger" data-toggle="modal" data-target="#modal-hapus-foto{{$f->id}}">Hapus</a>
-                    @endif
+                    <br>
+                    <div style="padding:5px; padding-bottom:1px; background:#313640; height:70px; margin-top:0px;">
+                      <p>{{substr($f->keterangan, 0, 120)}}</p>
+                    </div>
                 </div>
               </div>
             </div>

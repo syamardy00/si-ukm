@@ -52,7 +52,7 @@
                 <br>
               </div>
               @endforeach
-
+                {{ $berita->links() }}
             </div>
             <!-- /.tab-pane -->
 
@@ -84,7 +84,7 @@
                 <br>
               </div>
               @endforeach
-
+              {{ $beritaI->links() }}
             </div>
 
             <div class="tab-pane" id="umum">
@@ -115,7 +115,7 @@
                 <br>
               </div>
               @endforeach
-
+              {{ $beritaU->links() }}
             </div>
             </div>
             <!-- /.tab-content -->

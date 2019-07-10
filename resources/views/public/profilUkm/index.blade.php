@@ -10,6 +10,8 @@
     <li class="active"><a href="{{route('anggotaUkm.ukm.dashboardProfilUkm')}}"><i class="fa fa-user"></i>Profil UKM</a></li>
   @elseif(Auth::guard('monitoring')->check())
     <li><a href="#"><i class="fa fa-tv"></i>Monitoring</a></li>
+  @else
+    <li><a href="{{route('home')}}"><i class="fa fa-home"></i>Home</a></li>
   @endif
 </ol>
 </section>
@@ -22,8 +24,9 @@
       <div class="col-md-12">
         <div class="alert alert-success alert-dismissible" style="border-left:10px solid #00733E;">
           <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-          <h4><i class="icon fa fa-check"></i> Operasi Berhasil!</h4>
-          {{Session::get('berhasil')}}
+          <h4><i class="icon fa fa-check"></i> Pendaftaran Berhasil!</h4>
+          Anda berhasil terdaftar menjadi calon anggota UKM {{$ukm[0]->nama_ukm}}, untuk kelanjutan proses
+          pendaftaran pihak UKM akan memberitahukan melalui No Telepon.
         </div>
       </div>
     @endif
@@ -287,8 +290,10 @@
             <hr>
               @if(Auth::guard('monitoring')->check())
                 <center><h5><a href="{{route('monitoring.galeriFoto.index')}}"><b>Selengkapnya</b></a></h5></center>
-              @else
+              @elseif(Auth::guard('anggotaUkm')->check())
                 <center><h5><a href="{{route('public.galeriFoto.index', $ukm[0]->id)}}"><b>Selengkapnya</b></a></h5></center>
+              @else
+                <center><h5><a href="{{route('guest.galeriFoto.index', $ukm[0]->id)}}"><b>Selengkapnya</b></a></h5></center>
               @endif
             @endif
           </div>
@@ -340,7 +345,13 @@
             <div class="post">
               <div class="user-block">
                 <span class="username" style="margin-left: 0px;">
-                  <a href="{{url('/ukm/profil-ukm/berita/baca/'.$b->id)}}">{{$b->judul_berita}}</a>
+                  @if(Auth::guard('monitoring')->check())
+                    <a href="{{url('/monitoring/berita-ukm/baca/'.$b->id)}}">{{$b->judul_berita}}</a>
+                  @elseif(Auth::guard('anggotaUkm')->check())
+                    <a href="{{url('/ukm/profil-ukm/berita/baca/'.$b->id)}}">{{$b->judul_berita}}</a>
+                  @else
+                    <a href="{{url('/home/berita-ukm/baca/'.$b->id)}}">{{$b->judul_berita}}</a>
+                  @endif
                 </span>
                 <span class="description" style="margin-left: 0px;">
                   <i class="fa fa-calendar"></i> &nbsp;{{$b->tanggal_berita}} | &nbsp;
@@ -353,8 +364,16 @@
               </p>
               <ul class="list-inline">
               <li class="pull-right">
-                <a href="{{url('/ukm/profil-ukm/berita/baca/'.$b->id)}}" class="link-black text-sm"><i class="fa fa-eye margin-r-5"></i> Baca Berita
+                @if(Auth::guard('monitoring')->check())
+                  <a href="{{url('/monitoring/berita-ukm/baca/'.$b->id)}}" class="link-black text-sm"><i class="fa fa-eye margin-r-5"></i> Baca Berita
                   </a></li>
+                @elseif(Auth::guard('anggotaUkm')->check())
+                  <a href="{{url('/ukm/profil-ukm/berita/baca/'.$b->id)}}" class="link-black text-sm"><i class="fa fa-eye margin-r-5"></i> Baca Berita
+                  </a></li>
+                @else
+                  <a href="{{url('/home/berita-ukm/baca/'.$b->id)}}" class="link-black text-sm"><i class="fa fa-eye margin-r-5"></i> Baca Berita
+                  </a></li>
+                @endif
               </ul>
               <br>
             </div>
@@ -365,8 +384,10 @@
           <hr>
           @if(Auth::guard('monitoring')->check())
             <center><h5><a href="{{route('monitoring.beritaUkm.index')}}"><b>Selengkapnya</b></a></h5></center>
-          @else
+          @elseif(Auth::guard('anggotaUkm')->check())
             <center><h5><a href="{{route('public.beritaUkm.index', $ukm[0]['id'])}}"><b>Selengkapnya</b></a></h5></center>
+          @else
+            <center><h5><a href="{{route('guest.beritaUkm.index', $ukm[0]['id'])}}"><b>Selengkapnya</b></a></h5></center>
           @endif
 
           @endif

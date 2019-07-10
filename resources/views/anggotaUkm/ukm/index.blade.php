@@ -63,28 +63,31 @@
           </blockquote>
           @foreach($myUkm as $u)
           <div class="col-md-4">
-            <div class="box box-widget widget-user shadow" style=" border-bottom:4px solid #3C8DBC;">
-              <!-- Add the bg color to the header using any of the bg-* classes -->
-              <div class="widget-user-header" style="background:#222D32; color:white; padding-left: 0px;">
-                <p class="widget-user-username col-md-8" style="font-size: 12pt;">{{$u[0]->nama_ukm}}</p>
-                <div class="" style="bottom:5px; margin-bottom:5px; position: absolute; margin-left: 15px;">
-                  <form method="POST" action="{{route('anggotaUkm.ukm.dashboard')}}">
-                    {{ csrf_field() }}
-                    {{ method_field('POST') }}
-                    <input type="hidden" name="id_ukm" value="{{$u[0]->id}}">
-                    <button type="submit" href="" class="btn btn-sm btn-primary col-md-12">
-                      Dashboard <i class="fa fa-arrow-circle-right"></i>
-                    </button>
-                  </form>
-                </div>
-              </div>
-              <div class="widget-user-image" style="margin-top: -55px; text-align: right; right:20px;">
+            <div class="small-box shadow" style="background:#3A3F4B; color:#fff;">
+              <div class="inner">
                 @if($u[0]->logo_ukm)
-                  <img class="img-square" src="{{url($u[0]->logo_ukm)}}" alt="User Avatar" style="width: 100px; height: 100px;">
+                  <div class="widget-user-image img-rounded" style="text-align: right; right:20px; text-align:center; height:150px; width:100%;
+                  background:url({{url($u[0]->logo_ukm)}}); background-size:cover; background-position:center; margin-bottom:5px;">
+                  </div>
                 @else
-                <img class="img-square" src="{{url('/foto/default-image.png')}}" alt="User Avatar" style="width: 100px; height: 100px;">
+                  <div class="widget-user-image img-rounded" style="text-align: right; right:20px; text-align:center; height:150px; width:100%;
+                  background:url({{url('/foto/default-image.png')}}); background-size:cover; background-position:center; margin-bottom:5px;">
+                  </div>
                 @endif
+
+                <font style="font-size:11pt; font-weight:bold;"><center>{{substr($u[0]->nama_ukm, 0, 33)}}</center></font>
               </div>
+              <!-- <div class="icon">
+                <i class="fa fa-user"></i>
+              </div> -->
+              <form method="POST" action="{{route('anggotaUkm.ukm.dashboard')}}">
+                {{ csrf_field() }}
+                {{ method_field('POST') }}
+                <input type="hidden" name="id_ukm" value="{{$u[0]->id}}">
+                <div class="small-box-footer" style="text-align:center; padding:3px; background:#313640;">
+                  <a><button type="submit" class="btn btn-xs btn-flat" style="width:100%; background:#3A3F4B; color:#fff;">Dashboard <i class="fa fa-arrow-circle-right"></i></button></a>
+                </div>
+              </form>
             </div>
           </div>
           @endforeach
@@ -94,9 +97,6 @@
 
     <div class="col-xs-12">
       <div class="box box-danger">
-        <!-- <div class="box-header with-border">
-          <h3 class="box-title">UKM Lainya</h3>
-        </div> -->
         <div class="box-body">
           <blockquote>
             <p>UKM Lainya</p>
@@ -104,23 +104,31 @@
           </blockquote>
           @foreach($ukm as $u)
           <div class="col-md-4">
-            <div class="box box-widget widget-user shadow" style=" border-bottom:4px solid #DD4B39;">
-              <!-- Add the bg color to the header using any of the bg-* classes -->
-              <div class="widget-user-header" style="background:#222D32; color:white; padding-left: 0px;">
-                <p class="widget-user-username col-md-8" style="font-size: 12pt;">{{$u->nama_ukm}}</p>
-                <div class="" style="bottom:5px; margin-bottom:5px; position: absolute; margin-left: 15px;">
-                  <a href="{{route('anggotaUkm.ukm.profilUkm', $u->id)}}" class="btn btn-sm btn-primary col-md-12">
-                    Profil UKM <i class="fa fa-arrow-circle-right"></i>
-                  </a>
-                </div>
-              </div>
-              <div class="widget-user-image" style="margin-top: -55px; text-align: right; right:20px;">
+            <div class="small-box shadow" style="background:#3A3F4B; color:#fff;">
+              <div class="inner">
                 @if($u->logo_ukm)
-                  <img class="img-square" src="{{url($u->logo_ukm)}}" alt="User Avatar" style="width: 100px; height: 100px;">
+                  <div class="widget-user-image img-rounded" style="text-align: right; right:20px; text-align:center; height:150px; width:100%;
+                  background:url({{url($u->logo_ukm)}}); background-size:cover; background-position:center; margin-bottom:5px;">
+                  </div>
                 @else
-                <img class="img-square" src="{{url('/foto/default-image.png')}}" alt="User Avatar" style="width: 100px; height: 100px;">
+                  <div class="widget-user-image img-rounded" style="text-align: right; right:20px; text-align:center; height:150px; width:100%;
+                  background:url({{url('/foto/default-image.png')}}); background-size:cover; background-position:center; margin-bottom:5px;">
+                  </div>
                 @endif
+
+                <font style="font-size:11pt; font-weight:bold;"><center>{{substr($u->nama_ukm, 0, 33)}}</center></font>
               </div>
+              <!-- <div class="icon">
+                <i class="fa fa-user"></i>
+              </div> -->
+              <form method="POST" action="{{route('anggotaUkm.ukm.dashboard')}}">
+                {{ csrf_field() }}
+                {{ method_field('POST') }}
+                <input type="hidden" name="id_ukm" value="{{$u->id}}">
+                <div class="small-box-footer" style="text-align:center; padding:3px; background:#313640;">
+                  <a href="{{route('anggotaUkm.ukm.profilUkm', $u->id)}}" class="btn btn-flat btn-xs" style="width:100%; background:#3A3F4B; color:#fff;">Profil UKM <i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+              </form>
             </div>
           </div>
           @endforeach

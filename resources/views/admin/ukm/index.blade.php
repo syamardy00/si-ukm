@@ -91,19 +91,6 @@
         </div>
       </div>
 
-      <!-- <div class="col-md-4 tambah">
-        <a href="{{route('ukm.create')}}">
-          <div class="box box-widget widget-user shadow" style=" border-bottom:4px solid #3C8DBC; padding-left:-20px;">
-            <div class="widget-user-header" style="background:#222D32; padding-left:-20px; text-align: center;">
-                <i class="fa fa-plus-square-o" style="font-size:100px; top:5px; position: absolute; margin-left: -40px;"></i>
-              <div class="col-md-12" style="bottom:5px; margin-bottom:5px; position: absolute; text-align: center; margin-left: -20px;">
-                Tambah UKM Baru
-              </div>
-            </div>
-          </div>
-        </a>
-      </div> -->
-
     </div>
 
     <div class="row">
@@ -121,44 +108,24 @@
 
               @foreach($ukm as $u)
               <div class="col-md-4">
-                <div class="box box-widget widget-user shadow" style=" border-bottom:4px solid #3C8DBC;">
-                  <!-- Add the bg color to the header using any of the bg-* classes -->
-                  <div class="widget-user-header" style="background:#222D32; color:white; padding-left: 0px;">
-                    <p class="widget-user-username col-md-8" style="font-size: 12pt;">{{$u->nama_ukm}}</p>
-                    <!-- <h6 class=col-md-8>{{ substr($u->profil, 0, 70)}} . . .</h6> -->
-                    <div class="" style="bottom:5px; margin-bottom:5px; position: absolute; margin-left: 15px;">
-                      <a class="btn btn-sm btn-danger col-md-6" data-toggle="modal" data-target="#modal-danger{{$u->id}}" style="margin-right: 2px;">
-                        Hapus <i class="fa fa-trash"></i>
-                      </a>
-                      &nbsp;
-                      <a href="{{route('infoUkm.index', $u->id)}}" class="btn btn-sm btn-primary col-md-5">
-                        Info <i class="fa fa-arrow-circle-right"></i>
-                      </a>
-                    </div>
-                  </div>
-                  <div class="widget-user-image" style="margin-top: -55px; text-align: right; right:20px;">
+                <div class="small-box shadow" style="background:#3A3F4B; color:#fff;">
+                  <div class="inner">
                     @if($u->logo_ukm)
-                      <img class="img-square" src="{{url($u->logo_ukm)}}" alt="User Avatar" style="width: 100px; height: 100px;">
-                    @else
-                    <img class="img-square" src="{{url('/foto/default-image.png')}}" alt="User Avatar" style="width: 100px; height: 100px;">
-                    @endif
-                  </div>
-                  <!-- <div class="box-footer" style="margin:0px;">
-                    <div class="row">
-                      <div class="col-sm-12">
-                        <div class="description-block" style="text-align: right;">
-                            <h5 class="description-header" style="margin-top: -25px;">
-                              <a class="btn btn-sm btn-danger" data-toggle="modal" data-target="#modal-danger{{$u->id}}">
-                                Hapus Ukm <i class="fa fa-trash"></i>
-                              </a>
-                              <a href="{{route('infoUkm.index', $u->id)}}" class="btn btn-sm btn-success">
-                                Info Lengkap  <i class="fa fa-arrow-circle-right"></i>
-                              </a>
-                            </h5>
-                        </div>
+                      <div class="widget-user-image img-rounded" style="text-align: right; right:20px; text-align:center; height:150px; width:100%;
+                      background:url({{url($u->logo_ukm)}}); background-size:cover; background-position:center; margin-bottom:5px;">
                       </div>
-                    </div>
-                  </div> -->
+                    @else
+                      <div class="widget-user-image img-rounded" style="text-align: right; right:20px; text-align:center; height:150px; width:100%;
+                      background:url({{url('/foto/default-image.png')}}); background-size:cover; background-position:center; margin-bottom:5px;">
+                      </div>
+                    @endif
+                    <font style="font-size:11pt; font-weight:bold;"><center>{{substr($u->nama_ukm, 0, 33)}}</center></font>
+                  </div>
+
+                  <div class="small-box-footer" style="padding:4px;">
+                    <a data-toggle="modal" data-target="#modal-danger{{$u->id}}" class="btn btn-flat btn-xs" style="width:49%; background:#3A3F4B; color:#fff;">Hapus <i class="fa fa-trash"></i></a>
+                    <a href="{{route('infoUkm.index', $u->id)}}" class="btn btn-flat btn-xs" style="width:49%; background:#3A3F4B; color:#fff;">Info <i class="fa fa-arrow-circle-right"></i></a>
+                  </div>
                 </div>
               </div>
 
@@ -191,7 +158,7 @@
               </div>
               @endforeach
             </div>
-          
+
         </div>
       </div>
 

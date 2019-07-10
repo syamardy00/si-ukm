@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Auth;
 use PDF;
 use App\Ukm;
+use App\Jurusan;
 use App\ProfilUser;
+use Carbon\Carbon;
 use DB;
 use App\CalonAnggota;
 use Illuminate\Http\Request;
@@ -82,9 +84,16 @@ class CalonAnggotaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($id)
     {
-        //
+        $ukm = Ukm::where('id', $id)->get();
+        $jurusan = Jurusan::orderBy('nama_jurusan', 'ASC')->get();
+
+        if($ukm[0]->pendaftaran == 1){
+          return view('public.home.pendaftaran', compact('ukm', 'jurusan'));
+        }else{
+          return redirect()->back();
+        }
     }
 
     /**
@@ -95,7 +104,42 @@ class CalonAnggotaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+      // dd($request);
+      $validator = $this->validate($request, [
+        'nim' => 'required|string|min:9|max:10',
+        'nama' => 'required|min:3|max:50',
+        'id_jurusan' => 'required',
+        'jenis_kelamin' => 'required',
+        'tahun_angkatan' => 'required',
+        'email' => 'required|email',
+        'no_telepon' => 'required'
+      ]);
+
+      if($validator){
+        $tanggal = Carbon::now();
+        $tahun = Carbon::now()->format('Y');
+        $hitung = CalonAnggota::where('nim', $request->nim)->where('id_ukm', $request->id_ukm)->whereYear('tgl_pendaftaran', $tahun)->count();
+
+        if($hitung == 0){
+          CalonAnggota::create([
+            'nim' => request('nim'),
+            'nama' => request('nama'),
+            'id_jurusan' => request('id_jurusan'),
+            'jenis_kelamin' => request('jenis_kelamin'),
+            'tgl_lahir' => request('tgl_lahir'),
+            'tahun_angkatan' => request('tahun_angkatan'),
+            'email' => request('email'),
+            'no_telepon' => request('no_telepon'),
+            'id_ukm' => request('id_ukm'),
+            'tgl_pendaftaran' => $tanggal
+          ]);
+        }else{
+          return redirect()->back()->with('gagal', 'Data dengan NIM yang anda masukan telah terdaftar sebagai calon anggota tahun ' .$tahun. ' pada UKM ini.');
+        }
+        return redirect()->to('/home/profil-ukm/' .$request->id_ukm)->with('berhasil', 'Anda Berhasil Terdaftar.');
+      }else{
+        return redirect()->back()->withErrors($validator)->withInput();
+      }
     }
 
     /**

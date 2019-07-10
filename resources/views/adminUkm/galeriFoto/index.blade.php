@@ -64,13 +64,18 @@
             @endif
             <div class="col-md-4" style="margin-bottom:30px;">
               <div style="">
-                <div class="well" style="margin:0px;">
+                <div class="well" style="margin:0px; height:360px; background:#3A3F4B; color:#fff;">
                     <a class="example-image-link" href="{{$f->foto}}" data-lightbox="example-set" data-title="{{$f->keterangan}}">
-                      <img class="thumbnail img-responsive" alt="Bootstrap template" src="{{$f->foto}}" />
+                      <div class="widget-user-image img-rounded" style="text-align: right; right:20px; text-align:center; height:200px; width:100%;
+                      background:url({{url($f->foto)}}); background-size:cover; background-position:center;">
+                      </div>
+                      <!-- <img class="thumbnail img-responsive" alt="Bootstrap template" src="{{$f->foto}}" /> -->
                     </a>
-                    <hr>
-                    <p>{{substr($f->keterangan, 0, 125)}}</p>
-                    <a class="btn btn-xs btn-danger" data-toggle="modal" data-target="#modal-hapus-foto{{$f->id}}">Hapus</a>
+                    <br>
+                    <div style="padding:5px; padding-bottom:1px; background:#313640; height:70px; margin-top:0px;">
+                      <p>{{substr($f->keterangan, 0, 120)}}</p>
+                    </div>
+                    <a class="btn btn-xs btn-danger col-md-10" data-toggle="modal" data-target="#modal-hapus-foto{{$f->id}}" style="bottom:10px; left:30px; position:absolute;">Hapus</a>
                 </div>
               </div>
             </div>
