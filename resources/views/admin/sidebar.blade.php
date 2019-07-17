@@ -57,8 +57,8 @@
           </span>
         </a>
         <ul class="treeview-menu">
-          <li><a href="{{route('userMonitoring.create')}}"><i class="fa fa-plus"></i> Tambah UKM Baru</a></li>
-          <li><a href="{{route('userMonitoring.index')}}"><i class="fa fa-table"></i> Kelola UKM</a></li>
+          <li><a href="{{route('userMonitoring.create')}}"><i class="fa fa-plus"></i> Tambah Akun Monitoring</a></li>
+          <li><a href="{{route('userMonitoring.index')}}"><i class="fa fa-table"></i> Kelola Akun Monitoring</a></li>
         </ul>
       </li>
 

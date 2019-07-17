@@ -1,8 +1,4 @@
-@extends('admin.index')
-@section('content')
-
-@foreach($dUser as $u)
-<section class="content-header">
+pattern="[a-zA-Z0-9._]+"content-header">
   <h1>
     Edit Akun Admin UKM {{$u->nama_ukm}}
     <!-- <small>Lihat Profil UKM</small> -->
@@ -34,7 +30,7 @@
               <div class="form-group has-error col-md-12">
                 <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> Username</label>
                 <div class="input-group">
-                  <input type="text" class="form-control" id="username" name="username" placeholder="Username..." value="{{old('username')}}" required>
+                  <input type="text" class="form-control" id="username" name="username" placeholder="Username..." pattern="[a-zA-Z0-9._]+" value="{{old('username')}}" required>
                   <span class="input-group-addon"><i class="fa fa-user"></i></span>
                 </div>
                 <span class="help-block">{{ $errors->first('username') }}</span>
@@ -43,7 +39,7 @@
               <div class="form-group col-md-12">
                 <label for="username">Username</label>
                 <div class="input-group">
-                  <input type="text" class="form-control" id="username" name="username" placeholder="Username..." value="{{$u->username}}" required>
+                  <input type="text" class="form-control" id="username" name="username" placeholder="Username..." pattern="[a-zA-Z0-9._]+" value="{{$u->username}}" required>
                   <span class="input-group-addon"><i class="fa fa-user"></i></span>
                 </div>
               </div>

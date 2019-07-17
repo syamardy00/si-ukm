@@ -10,23 +10,6 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-// Route::get('/', function () {
-//     return view('welcome');
-// });
-
-Route::get('/adminlte', function () {
-  return view('adminlte.index');
-});
-
-// Route::get('/admin-ukm', function () {
-//   return view('adminUkm.index');
-// });
-
-// Route::get('/login', function () {
-//   return view('login');
-// })->middleware('guest');
-
 Route::get('/logout', 'LoginController@logout')->name('logout');
 
 Route::group(['middleware' => 'guest'], function(){
@@ -41,6 +24,12 @@ Route::group(['middleware' => 'guest'], function(){
   Route::get('/home/geleri-foto/{id}', 'GaleriFotoController@index')->name('guest.galeriFoto.index');
   Route::get('/home/pendaftaran/{id}', 'CalonAnggotaController@create')->name('guest.pendaftaran.create');
   Route::post('/home/pendaftaran/simpan', 'CalonAnggotaController@store')->name('guest.pendaftaran.store');
+
+  // Route::get('/email-view', function () {
+  //   return view('public.lupaPassword.email');
+  // });
+  Route::get('/home/lupa-password', 'UserController@lupaPassword')->name('guest.lupaPassword');
+  Route::post('/home/lupa-password', 'UserController@kirimEmailpassword')->name('guest.kirimEmailPassword');
 
 });
 
@@ -208,7 +197,7 @@ Route::group(['middleware' => ['auth:monitoring']], function(){
 
 });
 
-Route::group(['middleware' => ['auth:monitoring', 'auth:anggotaUkm']], function(){
+Route::group(['middleware' => ['auth:monitoring'], 'middleware' => ['auth:anggotaUkm']], function(){
   Route::get('public/berita/baca/cetak-pdf/{id}', 'BeritaUkmController@cetak_pdf')->name('public.beritaUkm.cetak_pdf');
   Route::get('public/anggota-ukm/cetak-pdf/{id}', 'AnggotaUkmController@cetak_pdf')->name('public.anggotaUkm.cetak_pdf');
   Route::get('public/proker-ukm/detail/cetak-pdf/{id}', 'ProkerUkmController@cetak_pdf')->name('public.prokerUkm.cetak_pdf');

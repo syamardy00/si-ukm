@@ -171,6 +171,10 @@
                 <div class="pull-right">
                   <button type="submit" class="btn btn-default btn-flat">Masuk</button>
                 </div>
+                &nbsp;
+                <div class="pull-right">
+                  <a href="{{route('guest.lupaPassword')}}" class="btn btn-default btn-flat">Lupa Password</a>
+                </div>
               </li>
             </form>
             </ul>
@@ -188,6 +192,15 @@
           <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
           <h4><i class="icon fa fa-ban"></i>Login Gagal !</h4>
           {{Session::get('error')}}
+        </div>
+      </div>
+    @endif
+    @if(Session::has('berhasil'))
+      <div class="row" style="margin:0px; background:red; left:0; right:0; margin-bottom:-20px; text-align:center;">
+        <div class="alert alert-success alert-dismissible">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+          <h4><i class="icon fa fa-ban"></i>Email Dikirim !</h4>
+          {{Session::get('berhasil')}}
         </div>
       </div>
     @endif
@@ -255,6 +268,9 @@
                 </div>
               </div>
               @endif
+              <div class="form-group col-md-12">
+                <a href="{{route('guest.lupaPassword')}}" class="pull-right">Lupa password</a>
+              </div>
 
             </div>
             <div class="box-footer">
@@ -324,5 +340,10 @@
   </footer>
 
   @include('layout.script')
+  <script>
+    $(document).ready(function() {
+      var nice = $("html").niceScroll({cursorcolor:"#3C8DBC", cursorwidth: '7.5px', autohidemode: true, bouncescroll:true});
+    });
+  </script>
 </body>
 </html>

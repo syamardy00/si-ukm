@@ -44,7 +44,7 @@
                 <div class="form-group has-error col-md-6">
                   <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> Username</label>
                   <div class="input-group">
-                    <input type="text" class="form-control" id="username" name="username" placeholder="Username..." value="{{old('username')}}" required>
+                    <input type="text" class="form-control" id="username" name="username" pattern="[a-zA-Z0-9._]+"  placeholder="Username..." value="{{old('username')}}" required>
                     <span class="input-group-addon"><i class="fa fa-user"></i></span>
                   </div>
                   <span class="help-block">{{ $errors->first('username') }}</span>
@@ -53,7 +53,7 @@
                 <div class="form-group col-md-6">
                   <label for="username">Username</label>
                   <div class="input-group">
-                    <input type="text" class="form-control" id="username" name="username" placeholder="Username..." value="{{old('username')}}" required>
+                    <input type="text" class="form-control" id="username" name="username" pattern="[a-zA-Z0-9._]+"  placeholder="Username..." value="{{old('username')}}" required>
                     <span class="input-group-addon"><i class="fa fa-user"></i></span>
                   </div>
                 </div>
@@ -180,28 +180,6 @@
                   </div>
                   @endif
 
-                  @if ($errors->has('email'))
-                  <div class="form-group has-error col-md-5">
-                    <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> Email</label>
-                    <div class="input-group">
-                      <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                      <input type="text" class="form-control" id="email" name="email" placeholder="Email..." value="{{old('email')}}" required>
-                    </div>
-                    <span class="help-block">{{ $errors->first('email') }}</span>
-                  </div>
-                  @else
-                  <div class="form-group col-md-5">
-                    <label for="nim">Email</label>
-                    <div class="input-group">
-                      <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                      <input type="email" class="form-control" id="email" name="email" placeholder="Email" value="{{old('email')}}" required>
-                    </div>
-                  </div>
-                  @endif
-
-                </div>
-                <div class="row">
-
                   @if ($errors->has('id_jurusan'))
                   <div class="form-group has-error col-md-5">
                     <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> Jurusan</label>
@@ -226,6 +204,9 @@
                     </div>
                   </div>
                   @endif
+                  
+                </div>
+                <div class="row">
 
                   <div class="form-group col-md-4">
                     <label>Tahun Angkatan</label>

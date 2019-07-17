@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\User;
 use App\Ukm;
+use App\ProfilUser;
 use Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Mail\Mailable;
 use DB;
 use Auth;
 
@@ -309,4 +312,50 @@ class UserController extends Controller
 
       }
     }
+
+    public function lupaPassword(){
+        return view('public.lupaPassword.index');
+    }
+
+    public function kirimEmailPassword(Request $request){
+
+      $username = $request->username;
+      $email = $request->email;
+
+      $cek = DB::table('user')->join('profil_user', 'user.id', '=', 'profil_user.id_user')
+            ->select('user.*', 'profil_user.email', 'profil_user.nama')->where('user.username', '=', $username)->where('email', '=', $email)->get();
+
+      if(sizeOf($cek) == 1){
+        $karakter = 'abcdefghijklmnopqrstuvwxyz1234567890';
+        $password_baru = '';
+
+        for($i=0; $i < 8; $i++){
+          $pos = rand(0, strlen($karakter)-1);
+          $password_baru .= $karakter{$pos};
+        }
+
+        try{
+            User::where('id', $cek[0]->id)
+            ->update([
+              'password' => Hash::make($password_baru)
+            ]);
+            Mail::send('public.lupaPassword.email', ['password_baru' => $password_baru, 'username' => $username, 'nama' => $cek[0]->nama],
+            function ($message) use ($request){
+                $message->subject('Reset Password');
+                $message->from('si.ukm@poltektedc.com', 'SI-UKM');
+                $message->to($request->email);
+            });
+
+            return redirect()->to('/home')->with('berhasil', 'Password Baru Berhasil Dikirim Ke Email, Silahkan Cek Email Anda.');
+
+        }catch (Exception $e){
+          return redirect()->back()->with('gagal', 'Error : ' .$e->getMessage());
+          //return 'Username dan Email Tidak Cocok ' .$e->getMessage();
+        }
+
+      }else{
+        return redirect()->back()->with('gagal', 'Username dan Email Tidak Cocok atau Tidak Terdaftar.');
+      }
+    }
+
 }

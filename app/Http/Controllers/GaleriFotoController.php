@@ -84,7 +84,7 @@ class GaleriFotoController extends Controller
 
         if($validator){
           //DEFINISIKAN PATH
-          $this->path = storage_path('../public/foto/galeri/');
+          $this->path = public_path('foto/galeri/');
           //MENGAMBIL FILE IMAGE DARI FORM
           $file = $request->file('foto');
           //MEMBUAT NAME FILE DARI GABUNGAN TIMESTAMP DAN UNIQID()
@@ -150,7 +150,7 @@ class GaleriFotoController extends Controller
         return redirect()->back();
       }
       $id->delete();
-      unlink('../public' .$id->foto);
+      unlink(public_path($id->foto));
 
       return redirect()->to('/galeri-foto')->with('berhasil', 'Foto berhasil dihapus.');
     }

@@ -226,7 +226,7 @@ class BeritaUkmController extends Controller
       //return view('adminUkm.beritaUkm.laporan_pdf', compact('ukm', 'berita'));
 
       $pdf = PDF::loadview('adminUkm.beritaUkm.laporan_pdf', compact('ukm', 'berita'));
-      return $pdf->download($berita[0]['judul_berita']);
+      return $pdf->download($berita[0]['judul_berita']. '.pdf');
     }
 
     public function semuaBerita(Ukm $id){

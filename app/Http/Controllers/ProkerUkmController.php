@@ -82,9 +82,9 @@ class ProkerUkmController extends Controller
        }else if(Auth::guard('monitoring')->check()){
 
       }
-       $file = ('../public' .$id->proposal);
+       $file = public_path($id->proposal);
        $headers = ['Content-Type' => 'application/pdf', ];
-       return response()->download($file, 'proposal ' .$id->nama_proker, $headers);
+       return response()->download($file, 'proposal ' .$id->nama_proker. '.pdf', $headers);
     }
 
     public function download_laporan(ProkerUkm $id){
@@ -99,9 +99,9 @@ class ProkerUkmController extends Controller
        }else if(Auth::guard('monitoring')->check()){
 
        }
-       $file = ('../public' .$id->laporan);
+       $file = public_path($id->laporan);
        $headers = ['Content-Type' => 'application/pdf', ];
-       return response()->download($file, 'laporan ' .$id->nama_proker, $headers);
+       return response()->download($file, 'laporan ' .$id->nama_proker. '.pdf', $headers);
     }
 
     public function upload_proposal(Request $request, ProkerUkm $id){
@@ -111,7 +111,7 @@ class ProkerUkmController extends Controller
 
         if($validator){
           //DEFINISIKAN PATH
-          $this->path = storage_path('../public/file/proposal/');
+          $this->path = public_path('file/proposal/');
           //MENGAMBIL FILE proposal DARI FORM
           $file = $request->file('proposal');
           //MEMBUAT NAME FILE DARI GABUNGAN TIMESTAMP DAN UNIQID()
@@ -140,7 +140,7 @@ class ProkerUkmController extends Controller
 
         if($validator){
           //DEFINISIKAN PATH
-          $this->path = storage_path('../public/file/laporan/');
+          $this->path = public_path('file/laporan/');
           //MENGAMBIL FILE proposal DARI FORM
           $file = $request->file('laporan');
           //MEMBUAT NAME FILE DARI GABUNGAN TIMESTAMP DAN UNIQID()
@@ -193,7 +193,7 @@ class ProkerUkmController extends Controller
         if($validator){//jika validasi berhasil
           if(!empty($request->proposal)){//jika upload proposal
             //DEFINISIKAN PATH
-            $this->path = storage_path('../public/file/proposal/');
+            $this->path = public_path('file/proposal/');
             //MENGAMBIL FILE proposal DARI FORM
             $file = $request->file('proposal');
             //MEMBUAT NAME FILE DARI GABUNGAN TIMESTAMP DAN UNIQID()
@@ -305,7 +305,7 @@ class ProkerUkmController extends Controller
 
           if(!empty($request->proposal)){//upload file proposal
             //DEFINISIKAN PATH
-            $this->path = storage_path('../public/file/proposal/');
+            $this->path = public_path('file/proposal/');
             //MENGAMBIL FILE proposal DARI FORM
             $file = $request->file('proposal');
             //MEMBUAT NAME FILE DARI GABUNGAN TIMESTAMP DAN UNIQID()
@@ -314,13 +314,13 @@ class ProkerUkmController extends Controller
             $file->move($this->path, $fileNameProposal);
             //hapus file sebelumnya
             if($id->proposal != null){
-              unlink('../public' .$id->proposal);
+              unlink(public_path($id->proposal));
             }
           }
 
           if(!empty($request->laporan)){//upload file laporan
             //DEFINISIKAN PATH
-            $this->path = storage_path('../public/file/laporan/');
+            $this->path = public_path('file/laporan/');
             //MENGAMBIL FILE proposal DARI FORM
             $file = $request->file('laporan');
             //MEMBUAT NAME FILE DARI GABUNGAN TIMESTAMP DAN UNIQID()
@@ -329,7 +329,7 @@ class ProkerUkmController extends Controller
             $file->move($this->path, $fileNameLaporan);
             //hapus file sebelumnya
             if($id->laporan != null){
-              unlink('../public' .$id->laporan);
+              unlink(public_path($id->laporan));
             }
           }
 
@@ -383,10 +383,10 @@ class ProkerUkmController extends Controller
     public function destroy(ProkerUkm $id)
     {
         if($id->proposal != null){
-          unlink('../public' .$id->proposal);
+          unlink(public_path($id->proposal));
         }
         if($id->laporan != null){
-          unlink('../public' .$id->laporan);
+          unlink(public_path($id->laporan));
         }
 
         $id->delete();

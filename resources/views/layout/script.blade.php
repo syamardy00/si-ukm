@@ -38,7 +38,7 @@
 <!-- <script src="{{url('/assets/dist/js/demo.js')}}"></script> -->
 <script>
   $(document).ready(function() {
-  var nice = $("html").niceScroll({cursorcolor:"#3C8DBC", cursorwidth: '7.5px', autohidemode: true});  // The document page (body)
+//  var nice = $("html").niceScroll({cursorcolor:"#3C8DBC", cursorwidth: '7.5px', autohidemode: true, bouncescroll:true});  // The document page (body)
   $("#main-sidebar").niceScroll({cursorcolor:"#3C8DBC", cursorwidth: '7.5px', autohidemode: true});  // The document page (body)
   $("#berita").niceScroll({cursorcolor:"#3C8DBC", cursorwidth: '7.5px', autohidemode: true});  // The document page (body)
   });

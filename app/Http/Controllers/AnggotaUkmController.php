@@ -203,7 +203,6 @@ class AnggotaUkmController extends Controller
         'id_jurusan' => 'required',
         'jenis_kelamin' => 'required',
         'tahun_angkatan' => 'required',
-        'email' => 'required|email',
         'no_telepon' => 'required',
         'foto' => 'image|mimes:jpg,png,jpeg'
       ]);
@@ -212,7 +211,7 @@ class AnggotaUkmController extends Controller
 
         if(!empty($request->foto)){
           //DEFINISIKAN PATH
-          $this->path = storage_path('../public/foto/user/');
+          $this->path = public_path('/foto/user/');
           //MENGAMBIL FILE IMAGE DARI FORM
           $file = $request->file('foto');
           //MEMBUAT NAME FILE DARI GABUNGAN TIMESTAMP DAN UNIQID()
@@ -246,7 +245,7 @@ class AnggotaUkmController extends Controller
              'jenis_kelamin' => request('jenis_kelamin'),
              'tgl_lahir' => request('tgl_lahir'),
              'tahun_angkatan' => request('tahun_angkatan'),
-             'email' => request('email'),
+             'email' => '',
              'no_telepon' => request('no_telepon'),
              'foto' => '/foto/user/'.$fileName
            ]);
@@ -259,7 +258,7 @@ class AnggotaUkmController extends Controller
              'jenis_kelamin' => request('jenis_kelamin'),
              'tgl_lahir' => request('tgl_lahir'),
              'tahun_angkatan' => request('tahun_angkatan'),
-             'email' => request('email'),
+             'email' => '',
              'no_telepon' => request('no_telepon')
            ]);
          }
@@ -355,48 +354,17 @@ class AnggotaUkmController extends Controller
       $user = User::where('id', $anggotaUkm->id_user)->get();
       $profilUser = ProfilUser::where('id_user', $anggotaUkm->id_user)->get();
 
-      if(!empty($request->passwordBaru)){ //validasi jika mengganti password
-        $validator = $this->validate($request, [
-          'username' => 'required|string|min:8|max:20|unique:user,username,'  .$user[0]['id']. ',id',
-          'passwordBaru' => 'required|min:8|max:255|confirmed',
-          'passwordBaru_confirmation' => 'required|same:passwordBaru',
-          'nim' => 'required|string|min:9|max:10|unique:profil_user,nim,'  .$profilUser[0]['id']. ',id',
-          'nama' => 'required|min:3|max:50',
-          'id_jurusan' => 'required',
-          'jenis_kelamin' => 'required',
-          'tahun_angkatan' => 'required',
-          'email' => 'required|email',
-          'no_telepon' => 'required',
-          'foto' => 'image|mimes:jpg,png,jpeg'
-        ]);
-      }else{ //validasi jika tidak mengganti password
-        $validator = $this->validate($request, [
-          'username' => 'required|string|min:8|max:20|unique:user,username,'  .$user[0]['id']. ',id',
-          'nim' => 'required|string|min:9|max:10|unique:profil_user,nim,'  .$profilUser[0]['id']. ',id',
-          'nama' => 'required|min:3|max:50',
-          'id_jurusan' => 'required',
-          'jenis_kelamin' => 'required',
-          'tahun_angkatan' => 'required',
-          'email' => 'required|email',
-          'no_telepon' => 'required',
-          'foto' => 'image|mimes:jpg,png,jpeg'
-        ]);
-      }
+      $validator = $this->validate($request, [
+        'nim' => 'required|string|min:9|max:10|unique:profil_user,nim,'  .$profilUser[0]['id']. ',id',
+        'nama' => 'required|min:3|max:50',
+        'id_jurusan' => 'required',
+        'jenis_kelamin' => 'required',
+        'tahun_angkatan' => 'required',
+        'no_telepon' => 'required',
+        'foto' => 'image|mimes:jpg,png,jpeg'
+      ]);
 
       if($validator){ //jika validasi berhasil
-
-        if(!empty($request->password)){ //input jika ganti password
-          User::where('id', $anggotaUkm->id_user)
-          ->update([
-            'username' => request('username'),
-            'password' => Hash::make(request('passwordBaru'))
-          ]);
-        }else{ //input jika tidak ganti password
-          User::where('id', $anggotaUkm->id_user)
-          ->update([
-            'username' => request('username')
-          ]);
-        }
 
         $anggotaUkm->update([
           'status' => request('status')
@@ -404,7 +372,7 @@ class AnggotaUkmController extends Controller
 
         if(!empty($request->foto)){ //jika mengganti foto
           //DEFINISIKAN PATH
-          $this->path = storage_path('../public/foto/user/');
+          $this->path = public_path('foto/user/');
           //MENGAMBIL FILE IMAGE DARI FORM
           $file = $request->file('foto');
           //MEMBUAT NAME FILE DARI GABUNGAN TIMESTAMP DAN UNIQID()
@@ -413,7 +381,7 @@ class AnggotaUkmController extends Controller
           Image::make($file)->save($this->path . $fileName);
           //hapus file sebelumnya
           if($profilUser[0]['foto']){
-              unlink('../public' .$profilUser[0]['foto']);
+              unlink(public_path($profilUser[0]['foto']));
           }
 
           ProfilUser::where('id_user', $anggotaUkm->id_user)
@@ -424,7 +392,6 @@ class AnggotaUkmController extends Controller
             'jenis_kelamin' => request('jenis_kelamin'),
             'tgl_lahir' => request('tgl_lahir'),
             'tahun_angkatan' => request('tahun_angkatan'),
-            'email' => request('email'),
             'no_telepon' => request('no_telepon'),
             'foto' => '/foto/user/'.$fileName
           ]);
@@ -439,12 +406,11 @@ class AnggotaUkmController extends Controller
             'jenis_kelamin' => request('jenis_kelamin'),
             'tgl_lahir' => request('tgl_lahir'),
             'tahun_angkatan' => request('tahun_angkatan'),
-            'email' => request('email'),
             'no_telepon' => request('no_telepon')
           ]);
 
         }
-        return redirect()->to('/anggota-ukm')->with('berhasil', 'Perubahan data anggota berhasil disimpan.');
+        return redirect()->to('anggota-ukm/edit/' .$anggotaUkm->id)->with('berhasil', 'Perubahan data anggota berhasil disimpan.');
 
       }//jika validasi gagal
         return redirect()->to('anggota-ukm/edit/' .$anggotaUkm->id)->withErrors($validator)->withInput();
@@ -465,8 +431,12 @@ class AnggotaUkmController extends Controller
 
         if($count==1){
           $id->delete();
-          ProfilUser::where('id_user', $id->id_user)->delete();
           User::where('id', $id->id_user)->delete();
+          $profilUser = ProfilUser::where('id_user', $id->id_user)->get();
+          if($profilUser[0]['foto']){
+            unlink(public_path($profilUser[0]['foto']));
+          }
+          ProfilUser::where('id_user', $id->id_user)->delete();
         }else{
           $id->delete();
         }
@@ -508,6 +478,6 @@ class AnggotaUkmController extends Controller
       //return view('adminUkm.anggotaUkm.edit', compact('anggota', 'jurusan','ukm'));
       //return view('adminUkm.anggotaUkm.laporan_pdf', compact('anggota','ukm','jurusan'));
     	$pdf = PDF::loadview('adminUkm.anggotaUkm.laporan_pdf', compact('anggota','ukm','jurusan'));
-    	return $pdf->download($anggota[0]->nama. '-' .$ukm[0]['nama_ukm']);
+    	return $pdf->download($anggota[0]->nama. '-' .$ukm[0]['nama_ukm']. '.pdf');
     }
 }

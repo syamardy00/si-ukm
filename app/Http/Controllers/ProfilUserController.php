@@ -109,7 +109,7 @@ class ProfilUserController extends Controller
           'id_jurusan' => 'required',
           'jenis_kelamin' => 'required',
           'tahun_angkatan' => 'required',
-          'email' => 'required|email',
+          'email' => 'required|email|unique:profil_user,email,'  .$profilUser[0]['id']. ',id',
           'no_telepon' => 'required',
           'foto' => 'image|mimes:jpg,png,jpeg'
         ]);
@@ -121,7 +121,7 @@ class ProfilUserController extends Controller
           'id_jurusan' => 'required',
           'jenis_kelamin' => 'required',
           'tahun_angkatan' => 'required',
-          'email' => 'required|email',
+          'email' => 'required|email|unique:profil_user,email,'  .$profilUser[0]['id']. ',id',
           'no_telepon' => 'required',
           'foto' => 'image|mimes:jpg,png,jpeg'
         ]);
@@ -129,7 +129,7 @@ class ProfilUserController extends Controller
 
       if($validator){ //jika validasi berhasil
 
-        if(!empty($request->password)){ //input jika ganti password
+        if(!empty($request->passwordBaru)){ //input jika ganti password
           User::where('id', $id_user)
           ->update([
             'username' => request('username'),

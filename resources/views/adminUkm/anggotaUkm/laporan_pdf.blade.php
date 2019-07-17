@@ -14,7 +14,7 @@
 <table>
   <tr>
     <td style="width:280px; vertical-align:top;"><b>Nama Unit Kegiatan Mahasiswa </b></td> <td style="width:280px;">{{$ukm[0]['nama_ukm']}}</td>
-    <td style="width:280px;" rowspan="6"><img src="{{base_path('public' .$a->foto)}}" style="height:120px;"></td>
+    <td style="width:280px;" rowspan="6"><img src="{{public_path($a->foto)}}" style="height:120px;"></td>
   </tr>
   <tr>
     <td style="width:280px; vertical-align:top;"><b>Username </b></td> <td style="width:280px;">{{$a->username}}</td>

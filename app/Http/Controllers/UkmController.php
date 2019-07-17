@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Ukm;
 use App\ProfilUser;
 use App\AnggotaUkm;
+use App\ProkerUkm;
+use App\BeritaUkm;
+use App\GaleriFoto;
 use App\CalonAnggota;
 use Auth;
 use Illuminate\Http\Request;
@@ -110,6 +113,31 @@ class UkmController extends Controller
     public function destroy(Ukm $ukm)
     {
       User::where('id_ukm', $ukm->id)->delete();
+      CalonAnggota::where('id_ukm', $ukm->id)->delete();
+      $prokerUkmGet = ProkerUkm::where('id_ukm', $ukm->id)->get();
+      if(sizeOf($prokerUkmGet) > 0){
+        foreach($prokerUkmGet as $p){
+          if($p->proposal != null){
+            unlink('../public' .$p->proposal);
+          }
+          if($p->laporan != null){
+            unlink('../public' .$p->laporan);
+          }
+        }
+      ProkerUkm::where('id_ukm', $ukm->id)->delete();
+      }
+
+      AnggotaUkm::where('id_ukm', $ukm->id)->delete();
+      BeritaUkm::where('id_ukm', $ukm->id)->delete();
+
+      $geleriFotoGet = GaleriFoto::where('id_ukm', $ukm->id)->get();
+      if(sizeOf($geleriFotoGet) > 0){
+        foreach($geleriFotoGet as $g){
+          unlink('../public' .$g->foto);
+        }
+        GaleriFoto::where('id_ukm', $ukm->id)->delete();
+      }
+
       $ukm->delete();
       return redirect()->to('/ukm/kelola-ukm')->with('berhasil', 'UKM Berhasil Dihapus.');
       // return $ukm->id;
@@ -139,7 +167,11 @@ class UkmController extends Controller
       // return $myUkm[1][0]->nama_ukm;
       //return $arrayUkm[0]->nama_ukm;
       //return $profil[0]['nama'];
-      return view('anggotaUkm.ukm.index', compact('profil', 'ukm', 'myUkm'));
+      if($profil[0]->email == ''){
+          return redirect(route('anggotaUkm.profilUser.index'));
+      }else{
+          return view('anggotaUkm.ukm.index', compact('profil', 'ukm', 'myUkm'));
+      }
 
     }
 

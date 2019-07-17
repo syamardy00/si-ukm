@@ -42,13 +42,22 @@
             <!-- /.box-header -->
             <!-- form start -->
               <div class="box-body">
+                  @if(Session::has('berhasil'))
+                    <div class="col-md-12">
+                      <div class="alert alert-success alert-dismissible" style="border-left:10px solid #00733E;">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        <h4><i class="icon fa fa-check"></i> Operasi Berhasil!</h4>
+                        {{Session::get('berhasil')}}
+                      </div>
+                    </div>
+                  @endif
 
                 <div class="col-md-6" style="padding:0px;">
                   @if ($errors->has('username'))
                   <div class="form-group has-error col-md-12">
                     <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> Username</label>
                     <div class="input-group">
-                      <input type="text" class="form-control" id="username" name="username" placeholder="Username..." value="{{old('username')}}" required>
+                      <input type="text" class="form-control" id="username" name="username" placeholder="Username..." pattern="[a-zA-Z0-9._]+" value="{{old('username')}}" disabled>
                       <span class="input-group-addon"><i class="fa fa-user"></i></span>
                     </div>
                     <span class="help-block">{{ $errors->first('username') }}</span>
@@ -57,56 +66,13 @@
                   <div class="form-group col-md-12">
                     <label for="username">Username</label>
                     <div class="input-group">
-                      <input type="text" class="form-control" id="username" name="username" placeholder="Username..." value="{{$a->username}}" required>
+                      <input type="text" class="form-control" id="username" name="username" placeholder="Username..." pattern="[a-zA-Z0-9._]+" value="{{$a->username}}" disabled>
                       <span class="input-group-addon"><i class="fa fa-user"></i></span>
                     </div>
                   </div>
                   @endif
-                  <div class="col-md-12">
-                    <p class="text-yellow">Kosongkan inputan "Password Baru" dan "Ketik Ulang Password Baru" jika tidak ingin merubah ubah password.</p>
-                  </div>
+
                 </div>
-
-                <div class="col-md-6" style="padding:0px;">
-                  @if ($errors->has('passwordBaru'))
-                  <div class="form-group has-error col-md-12">
-                    <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> Password Baru</label>
-                    <div class="input-group">
-                      <input type="password" class="form-control" name="passwordBaru" id="passwordBaru" rows="3" placeholder="Password...">
-                      <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                    </div>
-                    <span class="help-block">{{ $errors->first('passwordBaru') }}</span>
-                  </div>
-                  @else
-                  <div class="form-group col-md-12">
-                  <label for="password">Password Baru</label>
-                    <div class="input-group">
-                      <input type="password" class="form-control" name="passwordBaru" id="passwordBaru" rows="3" placeholder="Password...">
-                      <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                    </div>
-                  </div>
-                  @endif
-
-                  @if ($errors->has('passwordBaru_confirmation'))
-                  <div class="form-group has-error col-md-12">
-                    <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> Konfirmasi Password Baru</label>
-                    <div class="input-group">
-                      <input type="password" class="form-control" name="passwordBaru_confirmation" id="passwordBaru_confirmation" rows="3" placeholder="Ketik Ulang Password Baru...">
-                      <span class="input-group-addon"><i class="fa fa-keyboard-o"></i></span>
-                    </div>
-                    <span class="help-block">{{ $errors->first('passwordBaru_confirmation') }}</span>
-                  </div>
-                  @else
-                  <div class="form-group col-md-12">
-                  <label for="password">Konfirmasi Password Baru</label>
-                    <div class="input-group">
-                      <input type="password" class="form-control" name="passwordBaru_confirmation" id="passwordBaru_confirmation" rows="3" placeholder="Konfirmasi Password...">
-                      <span class="input-group-addon"><i class="fa fa-keyboard-o"></i></span>
-                    </div>
-                  </div>
-                  @endif
-              </div>
-
 
                 <div style="clear: both";></div>
                 <hr>
@@ -203,7 +169,7 @@
                     <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> Email</label>
                     <div class="input-group">
                       <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                      <input type="text" class="form-control" id="email" name="email" placeholder="Email..." value="{{old('email')}}" required>
+                      <input type="text" class="form-control" id="email" name="email" placeholder="Email belum ada..." value="{{old('email')}}" disabled>
                     </div>
                     <span class="help-block">{{ $errors->first('email') }}</span>
                   </div>
@@ -212,7 +178,7 @@
                     <label for="nim">Email</label>
                     <div class="input-group">
                       <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                      <input type="email" class="form-control" id="email" name="email" placeholder="Email" value="{{$a->email}}" required>
+                      <input type="email" class="form-control" id="email" name="email" placeholder="Email belum ada..." value="{{$a->email}}" disabled>
                     </div>
                   </div>
                   @endif

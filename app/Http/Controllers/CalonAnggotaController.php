@@ -253,7 +253,7 @@ class CalonAnggotaController extends Controller
       //return view('adminUkm.calonAnggota.laporan_pdf', compact('ukm', 'calonAnggota'));
 
     	$pdf = PDF::loadview('adminUkm.calonAnggota.laporan_pdf', compact('ukm', 'calonAnggota'));
-    	return $pdf->download($ukm[0]['nama_ukm']. '-' .$calonAnggota[0]->nama);
+    	return $pdf->download($ukm[0]['nama_ukm']. '-' .$calonAnggota[0]->nama. '.pdf');
     }
 
     public function ubah_status_pendaftaran(){
