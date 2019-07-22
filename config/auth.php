@@ -112,19 +112,19 @@ return [
         ],
         'adminUkm' => [
             'driver' => 'eloquent',
-            'model' => App\Login::class,
+            'model' => App\User::class,
         ],
         'anggotaUkm' => [
             'driver' => 'eloquent',
-            'model' => App\Login::class,
+            'model' => App\User::class,
         ],
         'admin' => [
             'driver' => 'eloquent',
-            'model' => App\Login::class,
+            'model' => App\User::class,
         ],
         'monitoring' => [
             'driver' => 'eloquent',
-            'model' => App\Login::class,
+            'model' => App\User::class,
         ],
 
         // 'users' => [

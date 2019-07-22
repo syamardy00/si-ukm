@@ -23,6 +23,9 @@ define('LARAVEL_START', microtime(true));
 
 require __DIR__.'/../vendor/autoload.php';
 
+// ================================================== hosting
+// require __DIR__.'/si-ukm/vendor/autoload.php';
+
 /*
 |--------------------------------------------------------------------------
 | Turn On The Lights
@@ -36,6 +39,12 @@ require __DIR__.'/../vendor/autoload.php';
 */
 
 $app = require_once __DIR__.'/../bootstrap/app.php';
+
+// ============================================================== hosting
+// $app = require_once __DIR__.'/si-ukm/bootstrap/app.php';
+// $app->bind('path.public', function(){
+//    return __DIR__;
+// });
 
 /*
 |--------------------------------------------------------------------------

@@ -9,4 +9,5 @@ class AnggotaUkm extends Model
 {
     protected $table = "anggota";
     protected $fillable = ['id_user', 'id_ukm', 'status'];
+    public $timestamps = false;
 }

@@ -20,18 +20,18 @@
       <div class="box box-widget widget-user">
         <!-- Add the bg color to the header using any of the bg-* classes -->
         <div class="widget-user-header" style="background: #2C3B41; color:white;">
-          <h3 class="widget-user-username" style="font-size: 30pt;">{{$ukm[0]['nama_ukm']}}</h3>
-          <h5 class="widget-user-desc">Politeknik TEDC Bandung</h5>
+          <p class="nama-ukm">{{$ukm[0]['nama_ukm']}}</p>
+          <p class="nama-poltek">Politeknik TEDC Bandung</p>
+          <a href="#" data-toggle="modal" data-target="#modal-logo">
+            <div class="col-md-2 pull-right logo-ukm" style="padding:0px;">
+            @if($ukm[0]['logo_ukm'])
+              <img class="img-square logo_ukm" src="{{$ukm[0]['logo_ukm']}}">
+            @else
+              <img class="img-square logo_ukm" src="{{url('/foto/default-image.png')}}">
+            @endif
+            </div>
+          </a>
         </div>
-        <a href="#" data-toggle="modal" data-target="#modal-logo">
-          <div class="widget-user-image" style="margin-top: -45px; text-align: right; right:20px;">
-          @if($ukm[0]['logo_ukm'])
-            <img class="img-square" src="{{$ukm[0]['logo_ukm']}}" alt="User Avatar" style="width: 180px; height: 180px;">
-          @else
-            <img class="img-square" src="{{url('/foto/default-image.png')}}" alt="User Avatar" style="width: 180px; height: 180px;">
-          @endif
-          </div>
-        </a>
         <div class="box-footer">
           <div class="row">
             <div class="col-sm-10">

@@ -48,6 +48,57 @@
     text-decoration:none;
   }
 
+  @media (max-width: 500px){
+
+    .box-header-back{
+      width:100%;
+      min-height:350px;
+      background:url('/foto/background.jpg');
+      background-size:cover;
+      background-attachment:fixed;
+      text-align:center;
+      color:white;
+    }
+
+    .box-judul{
+      color:white;
+      font-size:20pt;
+      text-align:center;
+    }
+
+    .box-sub-judul{
+      color:white;
+      font-size:12pt;
+      text-align:center;
+    }
+
+    .box-logo{
+      width:70px;
+      height:70px;
+      margin-top:50px;
+      margin-right:5px;
+      margin-bottom:10px;
+    }
+
+    .box-link{
+      margin-top:75px;
+      color:white;
+      text-decoration:none;
+      text-align:center;
+      bottom:25px;
+      font-size:9px;
+    }
+
+    .box-link a{
+      color:white;
+      text-decoration:none;
+    }
+
+  }
+
+
+
+
   .example-modal .modal {
     position: relative;
     top: auto;
@@ -199,7 +250,7 @@
       <div class="row" style="margin:0px; background:red; left:0; right:0; margin-bottom:-20px; text-align:center;">
         <div class="alert alert-success alert-dismissible">
           <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-          <h4><i class="icon fa fa-ban"></i>Email Dikirim !</h4>
+          <h4><i class="icon fa fa-check"></i>Email Dikirim !</h4>
           {{Session::get('berhasil')}}
         </div>
       </div>
@@ -340,10 +391,6 @@
   </footer>
 
   @include('layout.script')
-  <script>
-    $(document).ready(function() {
-      var nice = $("html").niceScroll({cursorcolor:"#3C8DBC", cursorwidth: '7.5px', autohidemode: true, bouncescroll:true});
-    });
-  </script>
+
 </body>
 </html>

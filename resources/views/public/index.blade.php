@@ -48,10 +48,5 @@
     <div class="control-sidebar-bg"></div>
   </div>
   @include('layout.script')
-  <script>
-    $(document).ready(function() {
-      var nice = $("html").niceScroll({cursorcolor:"#3C8DBC", cursorwidth: '7.5px', autohidemode: true, bouncescroll:true});
-    });
-  </script>
 </body>
 </html>

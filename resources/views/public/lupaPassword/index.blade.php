@@ -65,9 +65,9 @@
                         </div>
                       </div>
                       <div class="form-group col-md-12">
-                        <label for="nim">Email...</label>
+                        <label for="nim">Email</label>
                         <div class="input-group">
-                          <input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
+                          <input type="email" class="form-control" id="email" name="email" placeholder="Email..." required>
                           <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
                         </div>
                       </div>

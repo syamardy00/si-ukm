@@ -1,6 +1,7 @@
 <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>SI-UKM</title>
+    <link rel="icon" href="{{url('/foto/si-ukm.png')}}"/>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
@@ -60,4 +61,69 @@
     transform: translate(-50%,-50%);
     font: 14px arial;
   }
+
+  ::-webkit-scrollbar {
+  width: 7px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background:#232323;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background:#3C8DBC;
+  }
+
+  .logo_ukm{
+      width:180px;
+      height:180px;
+      top:-100px;
+      right:0;
+      position:absolute;
+  }
+
+  .nama-ukm{
+    font-size:30pt;
+  }
+
+  @media (max-width: 900px){
+
+    .nama-ukm{
+      margin-top:5px;
+      font-size:20pt;
+    }
+
+    .nama-poltek{
+      font-size:15pt;
+    }
+
+    .logo_ukm{
+        width:90px;
+        height:90px;
+        top:-95px;
+        right:0;
+        position:absolute;
+    }
+  }
+
+  @media (max-width: 500px){
+
+    .nama-ukm{
+      margin-top:25px;
+      font-size:9pt;
+    }
+
+    .nama-poltek{
+      font-size:7pt;
+    }
+
+    .logo_ukm{
+        width:70px;
+        height:70px;
+        top:-70px;
+        right:0;
+        position:absolute;
+    }
+  }
+
 </style>

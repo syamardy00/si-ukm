@@ -8,4 +8,5 @@ class BeritaUkm extends Model
 {
     protected $table = "berita";
     protected $fillable = ['judul_berita', 'isi_berita', 'tanggal_berita', 'id_ukm', 'sifat_berita'];
+    public $timestamps = false;
 }

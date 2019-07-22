@@ -3,8 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\ProfilUser;
-use App\Login;
-use App\UserLogin;
+use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
@@ -32,7 +31,7 @@ class LoginController extends Controller //implements Authenticatable
 
     function login(Request $req){
 
-      $data_user = Login::where('username', $req->username)->get();
+      $data_user = User::where('username', $req->username)->get();
         if(sizeOf($data_user) > 0 ){
 
         if(Hash::check($req->password, $data_user[0]['password'])){

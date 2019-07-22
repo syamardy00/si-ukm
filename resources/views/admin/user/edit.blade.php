@@ -1,4 +1,7 @@
-pattern="[a-zA-Z0-9._]+"content-header">
+@extends('admin.index')
+@section('content')
+@foreach($dUser as $u)
+<section class="content-header">
   <h1>
     Edit Akun Admin UKM {{$u->nama_ukm}}
     <!-- <small>Lihat Profil UKM</small> -->

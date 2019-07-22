@@ -14,4 +14,5 @@ class ProfilUser extends Model implements Authenticatable
 
       protected $table='profil_user';
       protected $fillable = ['id_user', 'nim', 'nama', 'id_jurusan' ,'jenis_kelamin', 'tgl_lahir', 'tahun_angkatan', 'foto', 'email', 'no_telepon'];
+      public $timestamps = false;
 }
