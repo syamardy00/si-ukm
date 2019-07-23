@@ -109,18 +109,18 @@
   @media (max-width: 500px){
 
     .nama-ukm{
-      margin-top:25px;
-      font-size:9pt;
+      margin-top:10px;
+      font-size:14pt;
     }
 
     .nama-poltek{
-      font-size:7pt;
+      font-size:10pt;
     }
 
     .logo_ukm{
         width:70px;
         height:70px;
-        top:-70px;
+        top:-75px;
         right:0;
         position:absolute;
     }
