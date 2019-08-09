@@ -44,17 +44,20 @@
               <div class="box-body">
                 <div class="row">
 
-                  <div class="form-group col-md-3">
+                  <div class="form-group col-md-6">
                     <label for="nim">NIM</label>
                     <input type="text" class="form-control" id="nim" name="nim" placeholder="NIM..." value="{{$a->nim}}" disabled>
                   </div>
 
-                  <div class="form-group col-md-5">
+                  <div class="form-group col-md-6">
                     <label for="nim">Nama Lengkap</label>
                     <input type="text" class="form-control" id="nama_lengkap" name="nama" placeholder="Nama Lengkap..." value="{{$a->nama}}" disabled>
                   </div>
 
-                  <div class="form-group col-md-4">
+                </div>
+                <div class="row">
+
+                  <div class="form-group col-md-6">
                     <label>Jenis Kelamin</label>
                     <div class="input-group col-md-12" style="padding-top:5px; border:1px solid #D2D6DE; padding-left:10px; padding-right:5px;">
                       @if($a->jenis_kelamin == 'Laki-Laki')
@@ -81,10 +84,7 @@
                     </div>
                   </div>
 
-                </div>
-                <div class="row">
-
-                  <div class="form-group col-md-4">
+                  <div class="form-group col-md-6">
                     <label>Tanggal Lahir</label>
                     <div class="input-group date">
                       <div class="input-group-addon">
@@ -94,7 +94,10 @@
                     </div>
                   </div>
 
-                  <div class="form-group col-md-3">
+                </div>
+                <div class="row">
+
+                  <div class="form-group col-md-6">
                     <label for="nim">No Telepon</label>
                     <div class="input-group">
                       <span class="input-group-addon"><i class="fa fa-phone"></i></span>
@@ -102,7 +105,7 @@
                     </div>
                   </div>
 
-                  <div class="form-group col-md-5">
+                  <div class="form-group col-md-6">
                     <label for="nim">Email</label>
                     <div class="input-group">
                       <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
@@ -113,7 +116,7 @@
                 </div>
                 <div class="row">
 
-                  <div class="form-group col-md-5">
+                  <div class="form-group col-md-6">
                     <label for="nim">Jurusan</label>
                     <div class="input-group col-md-12">
                       <select class="form-control select2" id="jurusan" name="id_jurusan" disabled="disabled">
@@ -125,7 +128,7 @@
                     </div>
                   </div>
 
-                  <div class="form-group col-md-4">
+                  <div class="form-group col-md-6">
                     <label>Tahun Angkatan</label>
                     <div class="input-group date">
                       <div class="input-group-addon">
@@ -135,7 +138,10 @@
                     </div>
                   </div>
 
-                  <div class="form-group col-md-3">
+                </div>
+                <div class="row">
+
+                  <div class="form-group col-md-6">
                     <label>Status Keanggotaan</label>
                     <div class="input-group col-md-12" style="padding-top:5px; border:1px solid #D2D6DE; padding-left:10px; padding-right:5px;">
                       @if($a->status == 'Aktif')

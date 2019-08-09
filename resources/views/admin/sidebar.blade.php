@@ -5,7 +5,7 @@
     <br>
     <div class="user-panel">
       <div class="pull-left image">
-        <img src="{{url('foto/si-ukm.png')}}" class="img-circle" alt="User Image">
+        <img src="{{url('foto/si-ukm-box.png')}}" class="img-circle" alt="User Image">
       </div>
       <div class="pull-left info">
         <p>SI-UKM Admin</p>

@@ -28,7 +28,7 @@
   }
 
   .box-logo{
-    width:150px;
+    width:155px;
     height:150px;
     margin-top:100px;
     margin-right:10px;
@@ -73,7 +73,7 @@
     }
 
     .box-logo{
-      width:70px;
+      width:72px;
       height:70px;
       margin-top:50px;
       margin-right:5px;
@@ -266,7 +266,7 @@
         <span class="box-sub-judul" style="margin-top:0px;">Politeknik TEDC Bandung</span>
       </div>
       <div class="col-md-12 box-link">
-        <span><a href="https://instagram.com/syam.ardy_">Syam Ardy Bangun Putra</a> &nbsp; . &nbsp; Sistem Informasi UKM &nbsp; . &nbsp; Version 1.0</span>
+        <span> &nbsp; Sistem Informasi UKM &nbsp; . &nbsp; Version 1.0</span>
       </div>
     </div>
 
@@ -382,12 +382,27 @@
   </div>
   <!-- tutup wraper -->
 
-  <footer class="main-footer" style="width:100%; left:0; margin-left:0px; bottom:0;">
-    <div class="pull-right hidden-xs">
-      Sistem Informasi UKM - <b>Version</b> 1.0
+  <footer class="main-footer col-md-12" style="width:100%; left:0; margin-left:0px; bottom:0; background:#1A2226; color:white;">
+    <div class="col-md-3" style="border-right:2px solid #3C8DBC; text-align:center; margin-top:5px;">
+        <img src="{{url('/foto/footer.png')}}" class="col-md-7" style="text-align:center; position:center;">
     </div>
-    <strong>Copyright &copy; 2019 Syam Ardy | Teknik Informatika | Politeknik TEDC Bandung.</strong> All rights
-    reserved.
+
+    <div class="col-md-6" style="text-align:center; margin-top:5px; padding-bottom:10px;">
+      <h3>Sistem Informasi Unit Kegiatan Mahasiswa</h3>
+      <hr>
+      Copyright &copy; 2019 Syam Ardy | Teknik Informatika | Politeknik TEDC Bandung. All rights reserved.
+    </div>
+
+    <div class="col-md-3" style="text-align:right; border-left:2px solid #3C8DBC; margin-top:5px;">
+      <b style="color:#3C8DBC">Politeknik TEDC Bandung</b><br>
+      Jl. Politeknik - Pasantren Km 2<br>
+      Cibabat - Cimahi Utara<br>
+      Kota Cimahi - Indonesia<br>
+      Kode Pos 40513<br>
+      Telepon +6222-6645951<br>
+      Email info@poltektedc.ac.id
+    </div>
+
   </footer>
 
   @include('layout.script')

@@ -4,7 +4,7 @@
 @foreach($user as $u)
 <section class="content-header">
   <h1>
-    Edit Akun Admin UKM
+    Edit Akun Admin
     <!-- <small>Lihat Profil UKM</small> -->
   </h1>
   <ol class="breadcrumb">

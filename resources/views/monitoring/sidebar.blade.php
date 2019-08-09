@@ -5,7 +5,7 @@
     <br>
     <div class="user-panel">
       <div class="pull-left image">
-        <img src="{{url('foto/si-ukm.png')}}" class="img-circle" alt="User Image" style="width:40px; height:40px;">
+        <img src="{{url('foto/si-ukm-box.png')}}" class="img-circle" alt="User Image" style="width:40px; height:40px;">
       </div>
       <div class="pull-left info">
         <p style="font-size:9pt;">{{substr($user->username, 0, 19)}}</p>
@@ -59,7 +59,7 @@
         <li class="header">MENU UKM</li>
 
         <li class="treeview">
-            <li><a href="{{route('monitoring.profilUkm')}}"><i class="fa fa-dashboard"></i> <span>Dashboard UKM</span></a></li>
+            <li><a href="{{route('monitoring.profilUkm')}}"><i class="fa fa-user"></i> <span>Profil UKM</span></a></li>
         </li>
 
         <li class="treeview">

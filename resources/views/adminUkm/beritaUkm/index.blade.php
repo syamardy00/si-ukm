@@ -141,7 +141,7 @@ $(document).ready(function() {
               <span class="sr-only">Toggle Dropdown</span> \
             </button> \
             <ul class="dropdown-menu" role="menu"> \
-              <li><a href="{{url('berita-ukm/baca')}}/'+data+'"><i class="fa fa-eye"></i>&nbsp&nbsp Baca</a></li> \
+              <li><a href="{{url('berita-ukm/baca')}}/'+data+'"><i class="fa fa-eye"></i>&nbsp Baca</a></li> \
               <li><a href="{{url('berita-ukm/edit')}}/'+data+'"><i class="fa fa-edit"></i> Edit</a></li> \
               <li><a href="#" data-toggle="modal" title="Hapus Proker" data-target="#modal-danger' + data + '"><i class="fa fa-trash"></i>&nbsp Hapus</a></li> \
             </ul> \

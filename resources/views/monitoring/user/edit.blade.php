@@ -3,12 +3,12 @@
 
 <section class="content-header">
   <h1>
-    Edit Akun Admin UKM
+    Ganti Password Monitoring
     <!-- <small>Lihat Profil UKM</small> -->
   </h1>
   <ol class="breadcrumb">
     <li><a href="#"><i class="fa fa-tv"></i>Monitoring</a></li>
-    <li class="active">Edit Akun</li>
+    <li class="active">Ganti Password</li>
   </ol>
 </section>
 

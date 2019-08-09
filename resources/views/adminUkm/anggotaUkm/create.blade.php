@@ -108,32 +108,35 @@
                 <div class="row">
 
                   @if ($errors->has('nim'))
-                  <div class="form-group has-error col-md-3">
+                  <div class="form-group has-error col-md-6">
                     <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> NIM</label>
                       <input type="text" class="form-control" id="nim" name="nim" placeholder="NIM..." value="{{old('nim')}}" required>
                     <span class="help-block">{{ $errors->first('nim') }}</span>
                   </div>
                   @else
-                  <div class="form-group col-md-3">
+                  <div class="form-group col-md-6">
                     <label for="nim">NIM</label>
                     <input type="text" class="form-control" id="nim" name="nim" placeholder="NIM..." value="{{old('nim')}}" required>
                   </div>
                   @endif
 
                   @if ($errors->has('nama'))
-                  <div class="form-group has-error col-md-5">
+                  <div class="form-group has-error col-md-6">
                     <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> Nama Lengkap</label>
                       <input type="text" class="form-control" id="nama_lengkap" name="nama" placeholder="Nama Lengkap..." value="{{old('nama')}}" required>
                     <span class="help-block">{{ $errors->first('nama') }}</span>
                   </div>
                   @else
-                  <div class="form-group col-md-5">
+                  <div class="form-group col-md-6">
                     <label for="nim">Nama Lengkap</label>
                     <input type="text" class="form-control" id="nama_lengkap" name="nama" placeholder="Nama Lengkap..." value="{{old('nama')}}" required>
                   </div>
                   @endif
 
-                  <div class="form-group col-md-4">
+                </div>
+                <div class="row">
+
+                  <div class="form-group col-md-6">
                     <label>Jenis Kelamin</label>
                     <div class="input-group col-md-12" style="padding-top:5px; border:1px solid #D2D6DE; padding-left:10px; padding-right:5px;">
                       <label>
@@ -148,10 +151,7 @@
                     </div>
                   </div>
 
-                </div>
-                <div class="row">
-
-                  <div class="form-group col-md-4">
+                  <div class="form-group col-md-6">
                     <label>Tanggal Lahir</label>
                     <div class="input-group date">
                       <div class="input-group-addon">
@@ -161,8 +161,11 @@
                     </div>
                   </div>
 
+                </div>
+                <div class="row">
+
                   @if ($errors->has('no_telepon'))
-                  <div class="form-group has-error col-md-3">
+                  <div class="form-group has-error col-md-6">
                     <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> No Telepon</label>
                     <div class="input-group">
                       <span class="input-group-addon"><i class="fa fa-phone"></i></span>
@@ -171,7 +174,7 @@
                     <span class="help-block">{{ $errors->first('no_telepon') }}</span>
                   </div>
                   @else
-                  <div class="form-group col-md-3">
+                  <div class="form-group col-md-6">
                     <label for="nim">No Telepon</label>
                     <div class="input-group">
                       <span class="input-group-addon"><i class="fa fa-phone"></i></span>
@@ -181,7 +184,7 @@
                   @endif
 
                   @if ($errors->has('id_jurusan'))
-                  <div class="form-group has-error col-md-5">
+                  <div class="form-group has-error col-md-6">
                     <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> Jurusan</label>
                     <div class="input-group col-md-12">
                       <select class="form-control select2" id="jurusan" name="id_jurusan">
@@ -193,7 +196,7 @@
                     <span class="help-block">{{ $errors->first('id_jurusan') }}</span>
                   </div>
                   @else
-                  <div class="form-group col-md-5">
+                  <div class="form-group col-md-6">
                     <label for="nim">Jurusan</label>
                     <div class="input-group col-md-12">
                       <select class="form-control select2" id="jurusan" name="id_jurusan">
@@ -204,11 +207,11 @@
                     </div>
                   </div>
                   @endif
-                  
+
                 </div>
                 <div class="row">
 
-                  <div class="form-group col-md-4">
+                  <div class="form-group col-md-6">
                     <label>Tahun Angkatan</label>
                     <div class="input-group date">
                       <div class="input-group-addon">
@@ -218,7 +221,7 @@
                     </div>
                   </div>
 
-                  <div class="form-group col-md-3">
+                  <div class="form-group col-md-6">
                     <label>Status Keanggotaan</label>
                     <div class="input-group col-md-12" style="padding-top:5px; border:1px solid #D2D6DE; padding-left:10px; padding-right:5px;">
                       <label>

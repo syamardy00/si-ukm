@@ -1,4 +1,4 @@
-pattern="[a-zA-Z0-9._]+" @extends('adminUkm.index')
+@extends('adminUkm.index')
 @section('content')
 
 @foreach($user as $u)

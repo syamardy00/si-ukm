@@ -49,7 +49,7 @@
 
             <div class="form-group col-md-12">
               <label for="profil">Profil</label>
-              <textarea class="form-control" name="profil" id="profil" rows="3" placeholder="Sekilas profil tentang UKM ..." required>{{$ukm[0]['visi']}}</textarea>
+              <textarea class="form-control" name="profil" id="profil" rows="3" placeholder="Sekilas profil tentang UKM ..." required>{{$ukm[0]['profil']}}</textarea>
             </div>
             <div class="form-group col-md-12">
               <label for="visi">Visi</label>
