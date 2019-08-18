@@ -24,10 +24,6 @@ Route::group(['middleware' => 'guest'], function(){
   Route::get('/home/geleri-foto/{id}', 'GaleriFotoController@index')->name('guest.galeriFoto.index');
   Route::get('/home/pendaftaran/{id}', 'CalonAnggotaController@create')->name('guest.pendaftaran.create');
   Route::post('/home/pendaftaran/simpan', 'CalonAnggotaController@store')->name('guest.pendaftaran.store');
-
-  // Route::get('/email-view', function () {
-  //   return view('public.lupaPassword.email');
-  // });
   Route::get('/home/lupa-password', 'UserController@lupaPassword')->name('guest.lupaPassword');
   Route::post('/home/lupa-password', 'UserController@kirimEmailpassword')->name('guest.kirimEmailPassword');
 

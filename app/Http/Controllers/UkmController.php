@@ -29,9 +29,6 @@ class UkmController extends Controller
     // admin UKM =========================================================================================================================
     public function index()
     {
-      // $id = Auth::guard('adminUkm')->user()->id;
-      //
-      // $profil = ProfilUser::where('id_user', $id)->get();
       $ukm = Ukm::orderBy('nama_ukm', 'ASC')->get();
       $tahun = Carbon::now()->format('Y');
 

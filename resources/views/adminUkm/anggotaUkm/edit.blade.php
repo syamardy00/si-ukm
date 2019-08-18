@@ -271,7 +271,7 @@
             </div>
             <div class="box-body">
               @if($a->foto)
-                <img class="img-square" id="foto" src="{{$a->foto}}" alt="Logo UKM" style="width: 100%;">
+                <img class="img-square" id="foto" src="{{url($a->foto)}}" alt="Logo UKM" style="width: 100%;">
               @else
                 <img class="img-square" id="foto" src="{{url('/foto/default-user.png')}}" alt="Logo UKM" style="width: 100%;">
               @endif

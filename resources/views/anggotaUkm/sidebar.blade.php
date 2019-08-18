@@ -6,7 +6,7 @@
     <div class="user-panel">
       <div class="pull-left image">
       @if($profil[0]['foto'])
-        <img src="{{$profil[0]['foto']}}" class="img-circle" alt="User Image" style="width:40px; height:40px;">
+        <img src="{{url($profil[0]['foto'])}}" class="img-circle" alt="User Image" style="width:40px; height:40px;">
       @else
         <img src="{{url('/foto/default-image.png')}}" class="img-circle" alt="User Image" style="width:40px; height:40px;">
       @endif

@@ -256,7 +256,7 @@
       </div>
     @endif
 
-    <div class="box-header-back">
+    <div class="box-header-back" style="background:url({{url('/foto/background.jpg')}}); background-size:cover; background-attachment:fixed;">
       <div class="col-md-12">
         <img src="{{url('/foto/si-ukm-full.png')}}" class="box-logo">
         <img src="{{url('/foto/logo-tedc.png')}}" class="box-logo">

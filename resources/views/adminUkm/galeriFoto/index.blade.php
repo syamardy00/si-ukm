@@ -65,7 +65,7 @@
             <div class="col-md-4" style="margin-bottom:30px;">
               <div style="">
                 <div class="well" style="margin:0px; height:360px; background:#3A3F4B; color:#fff;">
-                    <a class="example-image-link" href="{{$f->foto}}" data-lightbox="example-set" data-title="{{$f->keterangan}}">
+                    <a class="example-image-link" href="{{url($f->foto)}}" data-lightbox="example-set" data-title="{{$f->keterangan}}">
                       <div class="widget-user-image img-rounded" style="text-align: right; right:20px; text-align:center; height:200px; width:100%;
                       background:url({{url($f->foto)}}); background-size:cover; background-position:center;">
                       </div>

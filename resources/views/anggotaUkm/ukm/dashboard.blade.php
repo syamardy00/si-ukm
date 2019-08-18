@@ -25,7 +25,7 @@
           <a href="#" data-toggle="modal" data-target="#modal-logo">
             <div class="col-md-2 pull-right logo-ukm" style="padding:0px;">
             @if($ukm[0]['logo_ukm'])
-              <img class="img-square logo_ukm" src="{{$ukm[0]['logo_ukm']}}">
+              <img class="img-square logo_ukm" src="{{url($ukm[0]['logo_ukm'])}}">
             @else
               <img class="img-square logo_ukm" src="{{url('/foto/default-image.png')}}">
             @endif
@@ -214,7 +214,7 @@
                   @else
                     <div class="item">
                   @endif
-                      <img src="{{$f->foto}}" alt="First slide">
+                      <img src="{{url($f->foto)}}" alt="First slide">
                     <div class="carousel-caption" style="background:rgba(0.16, 0.17, 0.20, 0.5); margin:0px; left:0; bottom:0; width:100%;">
                       {{substr($f->keterangan, 0, 100)}}
                     </div>
@@ -254,7 +254,7 @@
             <a href="#" data-toggle="modal" data-target="#modal-struktur">
               <div class="widget-user-image">
               @if($ukm[0]['struktur'])
-                <img class="img-square" src="{{$ukm[0]['struktur']}}" alt="User Avatar" style="width: 100%;">
+                <img class="img-square" src="{{url($ukm[0]['struktur'])}}" alt="User Avatar" style="width: 100%;">
               @else
                 <img class="img-square" src="{{url('/foto/default-image.png')}}" alt="User Avatar" style="width: 100%;">
               @endif
@@ -385,7 +385,7 @@
   <!-- modal  -->
   <div class="modal modal-info fade" id="modal-struktur">
     @if($ukm[0]['struktur'])
-      <img class="" src="{{$ukm[0]['struktur']}}" style="margin:auto; top:0; right:0; left:0; bottom:0; position:absolute; width:800px;">
+      <img class="" src="{{url($ukm[0]['struktur'])}}" style="margin:auto; top:0; right:0; left:0; bottom:0; position:absolute; width:800px;">
     @else
       <img class="" src="{{url('/foto/default-image.png')}}" style="margin:auto; top:0; right:0; left:0; bottom:0; position:absolute; width:800px;">
     @endif
@@ -393,7 +393,7 @@
 
   <div class="modal modal-info fade" id="modal-logo">
     @if($ukm[0]['logo_ukm'])
-      <img class="" src="{{$ukm[0]['logo_ukm']}}" style="margin:auto; top:0; right:0; left:0; bottom:0; position:absolute; width:500px;">
+      <img class="" src="{{url($ukm[0]['logo_ukm'])}}" style="margin:auto; top:0; right:0; left:0; bottom:0; position:absolute; width:500px;">
     @else
       <img class="" src="{{url('/foto/default-image.png')}}" style="margin:auto; top:0; right:0; left:0; bottom:0; position:absolute; width:500px;">
     @endif

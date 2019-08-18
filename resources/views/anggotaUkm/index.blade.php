@@ -23,7 +23,7 @@
         @if($profil[0]->email == '')
         <br>
           <div class="col-md-12">
-            <div class="alert alert-warning alert-dismissible" style="border-left:10px solid #C87F0A;"> 
+            <div class="alert alert-warning alert-dismissible" style="border-left:10px solid #C87F0A;">
               <h4><i class="icon fa fa-info"></i> Penting !</h4>
               Lengkapi profil anda, segera ganti <b>Password</b> yang diberikan oleh Admin UKM,
               Tambahkan <b>Email Aktif</b> untuk mempermudah proses jika terjadi lupa password. Klik menu <b>Profil Saya</b>.
