@@ -29,6 +29,9 @@ class UkmController extends Controller
     // admin UKM =========================================================================================================================
     public function index()
     {
+      // $id = Auth::guard('adminUkm')->user()->id;
+      //
+      // $profil = ProfilUser::where('id_user', $id)->get();
       $ukm = Ukm::orderBy('nama_ukm', 'ASC')->get();
       $tahun = Carbon::now()->format('Y');
 
@@ -115,10 +118,10 @@ class UkmController extends Controller
       if(sizeOf($prokerUkmGet) > 0){
         foreach($prokerUkmGet as $p){
           if($p->proposal != null){
-            unlink('../public' .$p->proposal);
+            unlink(public_path($p->proposal));
           }
           if($p->laporan != null){
-            unlink('../public' .$p->laporan);
+            unlink(public_path($p->laporan));
           }
         }
       ProkerUkm::where('id_ukm', $ukm->id)->delete();
@@ -130,7 +133,7 @@ class UkmController extends Controller
       $geleriFotoGet = GaleriFoto::where('id_ukm', $ukm->id)->get();
       if(sizeOf($geleriFotoGet) > 0){
         foreach($geleriFotoGet as $g){
-          unlink('../public' .$g->foto);
+          unlink(public_path($g->foto));
         }
         GaleriFoto::where('id_ukm', $ukm->id)->delete();
       }

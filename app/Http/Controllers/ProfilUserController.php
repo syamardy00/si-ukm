@@ -144,7 +144,7 @@ class ProfilUserController extends Controller
 
         if(!empty($request->foto)){ //jika mengganti foto
           //DEFINISIKAN PATH
-          $this->path = storage_path('../public/foto/user/');
+          $this->path = public_path('/foto/user/');
           //MENGAMBIL FILE IMAGE DARI FORM
           $file = $request->file('foto');
           //MEMBUAT NAME FILE DARI GABUNGAN TIMESTAMP DAN UNIQID()
@@ -153,7 +153,7 @@ class ProfilUserController extends Controller
           Image::make($file)->save($this->path . $fileName);
           //hapus file sebelumnya
           if($profilUser[0]['foto']){
-              unlink('../public' .$profilUser[0]['foto']);
+              unlink(public_path($profilUser[0]['foto']));
           }
 
           ProfilUser::where('id_user', $id_user)

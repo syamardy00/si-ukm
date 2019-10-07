@@ -129,7 +129,7 @@ class ProfilUkmController extends Controller
 
         if(!empty($request->logo_ukm)){
           //DEFINISIKAN PATH
-          $this->pathLogo = storage_path('../public/foto/ukm/');
+          $this->pathLogo = public_path('/foto/ukm/');
           //MENGAMBIL FILE IMAGE DARI FORM
           $fileLogo = $request->file('logo_ukm');
           //MEMBUAT NAME FILE DARI GABUNGAN TIMESTAMP DAN UNIQID()
@@ -138,13 +138,13 @@ class ProfilUkmController extends Controller
           Image::make($fileLogo)->save($this->pathLogo . $fileNameLogo);
           //hapus file sebelumnya
           if($data_ukm[0]['logo_ukm']){
-              unlink('../public' .$data_ukm[0]['logo_ukm']);
+              unlink(public_path($data_ukm[0]['logo_ukm']));
           }
         }
 
         if(!empty($request->struktur)){
           //DEFINISIKAN PATH
-          $this->pathStruktur = storage_path('../public/foto/struktur/');
+          $this->pathStruktur = public_path('/foto/struktur/');
           //MENGAMBIL FILE IMAGE DARI FORM
           $fileStruktur = $request->file('struktur');
           //MEMBUAT NAME FILE DARI GABUNGAN TIMESTAMP DAN UNIQID()
@@ -153,7 +153,7 @@ class ProfilUkmController extends Controller
           Image::make($fileStruktur)->save($this->pathStruktur . $fileNameStruktur);
           //hapus file sebelumnya
           if($data_ukm[0]['struktur']){
-            unlink('../public' .$data_ukm[0]['struktur']);
+            unlink(public_path($data_ukm[0]['struktur']));
           }
         }
 
